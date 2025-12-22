@@ -88,7 +88,7 @@ sudo apt install -y \
     open-vm-tools-desktop \
     fuse \
     libgtk-3-dev \
-    sddm \
+    lightdm \
     lazygit
     starship \
     btop \
@@ -106,7 +106,7 @@ sudo apt install -y firefox
 
 echo "Habilitando serviços..."
 sudo systemctl enable vmtoolsd
-sudo systemctl enable sddm
+sudo systemctl enable lightdm
 
 echo "Instalando Visual Studio Code (repo oficial Microsoft)..."
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
@@ -126,6 +126,8 @@ sudo apt install -y code
 # cd -
 
 # echo "Instalando tema SDDM Sugar Dark..."
+# sudo apt install sddm
+# sudo systemctl enable sddm
 # sudo mkdir -p /usr/share/sddm/themes
 # sudo git clone https://github.com/MarianArlt/sddm-sugar-dark.git /usr/share/sddm/themes/sugar-dark
 # sudo sh -c 'echo "[Theme]\nCurrent=sugar-dark" > /etc/sddm.conf'
