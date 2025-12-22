@@ -49,7 +49,7 @@ sudo apt install -y \
     gvfs \
     zip \
     p7zip-full \
-    unrar \
+    unrar-free \
     bat \
     nwg-look \
     xdg-user-dirs \
