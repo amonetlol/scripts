@@ -108,7 +108,7 @@ cd -
 echo "Instalando tema SDDM Sugar Dark..."
 sudo mkdir -p /usr/share/sddm/themes
 sudo git clone https://github.com/MarianArlt/sddm-sugar-dark.git /usr/share/sddm/themes/sugar-dark
-sudo sh -c 'echo "[Theme]\nCurrent=sugar-dark" > /etc/sddm.conf.d/theme.conf'
+sudo sh -c 'echo "[Theme]\nCurrent=sugar-dark" > /etc/sddm.conf'
 
 echo "Instalando ferramentas via Cargo (Rust) - isso pode demorar..."
 if ! command -v cargo &> /dev/null; then
