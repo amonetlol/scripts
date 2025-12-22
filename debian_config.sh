@@ -6,16 +6,30 @@ echo "Ativando repositórios contrib e non-free (necessário para unrar e outros
 sudo sed -i 's/main$/main contrib non-free non-free-firmware/' /etc/apt/sources.list
 sudo apt update
 
+# Debian Trixie 13
+# /etc/apt/sources.list
+# deb http://deb.debian.org/debian/ trixie main non-free-firmware
+# deb-src http://deb.debian.org/debian/ trixie main non-free-firmware
+# deb http://security.debian.org/debian-security trixie-security main non-free-firmware
+# deb-src http://security.debian.org/debian-security trixie-security main non-free-firmware
+# deb http://deb.debian.org/debian/ trixie-updates main non-free-firmware
+# deb-src http://deb.debian.org/debian/ trixie-updates main non-free-firmware
+
+# Debian SID
+# /etc/apt/sources.list
+# deb http://deb.debian.org/debian/ sid main contrib non-free non-free-firmware
+# deb-src http://deb.debian.org/debian/ sid main contrib non-free non-free-firmware
+
 echo "Atualizando o sistema..."
 sudo apt upgrade -y
 
-echo "Adicionando usuário 'pio' ao grupo sudo (se existir)..."
-if id "pio" &>/dev/null; then
-    sudo usermod -aG sudo pio
-    echo "Usuário pio adicionado ao sudo."
-else
-    echo "Aviso: Usuário 'pio' não existe. Crie-o primeiro."
-fi
+# echo "Adicionando usuário 'pio' ao grupo sudo (se existir)..."
+# if id "pio" &>/dev/null; then
+#     sudo usermod -aG sudo pio
+#     echo "Usuário pio adicionado ao sudo."
+# else
+#     echo "Aviso: Usuário 'pio' não existe. Crie-o primeiro."
+# fi
 
 echo "Instalando pacotes básicos do Debian..."
 sudo apt install -y \
@@ -53,6 +67,7 @@ sudo apt install -y \
     bat \
     nwg-look \
     xdg-user-dirs \
+    xdg-user-dirs-gtk \
     xdotool \
     jq \
     xxhash \
@@ -73,7 +88,15 @@ sudo apt install -y \
     open-vm-tools-desktop \
     fuse \
     libgtk-3-dev \
-    sddm
+    sddm \
+    lazygit
+    starship \
+    btop \
+    ripgrep \
+    eza \
+    fastfetch \
+    duf \
+    kitty
 
 echo "Instalando Firefox estável (versão oficial Mozilla, não ESR)..."
 wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null
@@ -93,39 +116,19 @@ rm -f packages.microsoft.gpg
 sudo apt update
 sudo apt install -y code
 
-echo "Instalando Kitty (terminal) via curl..."
-curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+# echo "Instalando JetBrains Mono Nerd Font..."
+# mkdir -p ~/.local/share/fonts
+# wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
+# cd ~/.local/share/fonts
+# unzip JetBrainsMono.zip
+# rm JetBrainsMono.zip
+# fc-cache -fv
+# cd -
 
-echo "Instalando JetBrains Mono Nerd Font..."
-mkdir -p ~/.local/share/fonts
-wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
-cd ~/.local/share/fonts
-unzip JetBrainsMono.zip
-rm JetBrainsMono.zip
-fc-cache -fv
-cd -
-
-echo "Instalando tema SDDM Sugar Dark..."
-sudo mkdir -p /usr/share/sddm/themes
-sudo git clone https://github.com/MarianArlt/sddm-sugar-dark.git /usr/share/sddm/themes/sugar-dark
-sudo sh -c 'echo "[Theme]\nCurrent=sugar-dark" > /etc/sddm.conf'
-
-echo "Instalando ferramentas via Cargo (Rust) - isso pode demorar..."
-if ! command -v cargo &> /dev/null; then
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-    source "$HOME/.cargo/env"
-fi
-cargo install --locked lazygit starship btop ripgrep eza duf fastfetch
-
-echo "Adicionando ~/.cargo/bin ao PATH no ~/.bashrc..."
-if ! grep -q 'export PATH="$HOME/.cargo/bin:$PATH"' ~/.bashrc; then
-    echo '' >> ~/.bashrc
-    echo '# Adicionado pelo script de configuração - ferramentas Rust/Cargo' >> ~/.bashrc
-    echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
-    echo "PATH atualizado em ~/.bashrc"
-else
-    echo "PATH já estava configurado no ~/.bashrc"
-fi
+# echo "Instalando tema SDDM Sugar Dark..."
+# sudo mkdir -p /usr/share/sddm/themes
+# sudo git clone https://github.com/MarianArlt/sddm-sugar-dark.git /usr/share/sddm/themes/sugar-dark
+# sudo sh -c 'echo "[Theme]\nCurrent=sugar-dark" > /etc/sddm.conf'
 
 echo "Configuração concluída!"
 echo "Reinicie o sistema para aplicar o SDDM com tema Sugar Dark e testar o mate-polkit (diálogos de senha sudo)."
