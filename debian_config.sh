@@ -89,7 +89,7 @@ sudo apt install -y \
     fuse \
     libgtk-3-dev \
     lightdm \
-    lazygit
+    lazygit \
     starship \
     btop \
     ripgrep \
