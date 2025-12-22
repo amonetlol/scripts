@@ -2,8 +2,12 @@
 
 set -e  # Para o script em caso de erro
 
+echo "Ativando repositórios contrib e non-free (necessário para unrar e outros)..."
+sudo sed -i 's/main$/main contrib non-free non-free-firmware/' /etc/apt/sources.list
+sudo apt update
+
 echo "Atualizando o sistema..."
-sudo apt update && sudo apt upgrade -y
+sudo apt upgrade -y
 
 echo "Adicionando usuário 'pio' ao grupo sudo (se existir)..."
 if id "pio" &>/dev/null; then
@@ -15,7 +19,7 @@ fi
 
 echo "Instalando pacotes básicos do Debian..."
 sudo apt install -y \
-    policykit-1-gnome \
+    mate-polkit \
     pavucontrol \
     x11-xserver-utils \
     python3-psutil \
@@ -124,5 +128,6 @@ else
 fi
 
 echo "Configuração concluída!"
-echo "Reinicie o sistema para aplicar o SDDM com tema Sugar Dark."
+echo "Reinicie o sistema para aplicar o SDDM com tema Sugar Dark e testar o mate-polkit (diálogos de senha sudo)."
 echo "Para aplicar o novo PATH imediatamente no terminal atual, execute: source ~/.bashrc"
+echo "Se preferir outro agente Polkit (ex: lxqt-policykit ou lxpolkit), instale manualmente e remova mate-polkit."
