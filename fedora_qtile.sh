@@ -51,7 +51,7 @@ update_and_upgrade() {
 install_basic_packages() {
     echo "Instalando pacotes básicos para ambiente Qtile..."
     sudo dnf install -y \
-        git polkit-gnome pavucontrol  python3-psutil python3-dbus \
+        git fedora polkit-gnome pavucontrol  python3-psutil python3-dbus \
         wget neovim git rofi dmenu scrot xclip dunst alsa-utils alacritty picom \
         unzip gcc luarocks maim gnome-calendar mousepad thunar thunar-volman \
         thunar-archive-plugin file-roller gvfs unzip p7zip p7zip-plugins unrar bat \
@@ -64,7 +64,7 @@ install_basic_packages() {
     # Alguns pacotes extras úteis que costumam faltar em setups mínimos
     sudo dnf install -y \
         xset xrandr \
-        python3-xcffib python3-cairocffi python3-dbus-next
+        python3-xcffib python3-cairocffi python3-dbus-next  --skip-unavailable
 
     # FALTA ARRUMAR:
     # xwallpaper imagemagick python3-pynvim lazygit starship
@@ -80,9 +80,7 @@ install_vscode() {
 
 enable_services() {
     echo "Habilitando serviços..."
-    # open-vm-tools (se for VM)
-    sudo systemctl enable vmtoolsd 2>/dev/null || true
-    # LightDM
+    sudo systemctl enable vmtoolsd
     sudo systemctl enable lightdm
 }
 
