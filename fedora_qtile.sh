@@ -78,6 +78,7 @@ install_jetbrains_mono_nerd_font() {
 }
 
 install_qtile() {
+    mkdir -p "$HOME/.src"
     local qtile_dir="$HOME/.src/qtile"
     local repo_url="https://github.com/amonetlol/qtile.git"
     local post_install_script="$qtile_dir/pos_install.sh"
