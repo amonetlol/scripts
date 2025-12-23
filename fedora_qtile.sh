@@ -44,7 +44,7 @@ install_basic_packages() {
         python3-xcffib python3-cairocffi python3-dbus-next
 
     # FALTA ARRUMAR:
-    # xwallpaper imagemagick python3-pynvim lazygit starship eza
+    # xwallpaper imagemagick python3-pynvim lazygit starship
 }
 
 install_firefox_official() {
@@ -126,6 +126,15 @@ install_shell_configs() {
     link "$HOME/.src/qtile/.aliase" "$HOME/.aliase"
     link "$HOME/.src/qtile/.aliase-fedora" "$HOME/.aliase-fedora"
 
+    # 1. Instalar o plugin do DNF para gerenciar repositórios COPR
+    sudo dnf install -y 'dnf-command(copr)'
+    # 2. Habilitar o repositório COPR específico para o eza
+    echo "--- Habilitando repositório COPR (alternateved/eza) ---"
+    sudo dnf copr enable -y alternateved/eza
+    # 3. Instalar o eza
+    echo "--- Instalando o eza ---"
+    sudo dnf install -y eza
+    
     echo -e "${YELLOW}Dica:${NC} Rode 'source ~/.bashrc' para aplicar as mudanças agora."
 }
 
