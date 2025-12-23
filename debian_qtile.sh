@@ -46,7 +46,7 @@ install_basic_packages() {
         imagemagick findutils coreutils bc lua5.1 python3-pip python3-pynvim \
         tree-sitter-cli npm nodejs fd-find feh qtile open-vm-tools-desktop \
         fuse libgtk-3-dev lightdm slick-greeter lazygit starship btop ripgrep \
-        eza fastfetch duf kitty
+        eza fastfetch duf kitty htop
 }
 
 install_firefox_official() {
