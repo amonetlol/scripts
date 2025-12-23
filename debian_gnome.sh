@@ -119,7 +119,7 @@ install_walls() {
 }
 
 install_shell_configs() {
-    echo_header "Configurações do shell (.bashrc + .aliases)"
+    echo_header "Configuracoes do shell (.bashrc + .aliases)"
     if [[ -f "$DOTFILES_DIR/.bashrc" ]]; then
         BASHRC_DEST="$HOME/.bashrc"
 
