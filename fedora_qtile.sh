@@ -28,20 +28,23 @@ update_and_upgrade() {
 install_basic_packages() {
     echo "Instalando pacotes básicos para ambiente Qtile..."
     sudo dnf install -y \
-        polkit-gnome pavucontrol xorg-x11-server-utils python3-psutil python3-dbus \
+        git polkit-gnome pavucontrol  python3-psutil python3-dbus \
         wget neovim git rofi dmenu scrot xclip dunst alsa-utils alacritty picom \
         unzip gcc luarocks maim gnome-calendar mousepad thunar thunar-volman \
         thunar-archive-plugin file-roller gvfs unzip p7zip p7zip-plugins unrar bat \
-        xdg-user-dirs xdg-user-dirs-gtk xdotool jq xwallpaper \
-        imagemagick findutils coreutils bc lua lua-devel python3-pip python3-pynvim \
+        xdg-user-dirs xdg-user-dirs-gtk xdotool jq  \
+         findutils coreutils bc lua lua-devel python3-pip  \
         tree-sitter-cli npm nodejs fd-find feh qtile qtile-extras \
-        open-vm-tools-desktop fuse gtk3-devel lightdm lightdm-gtk greeter \
-        lazygit starship btop ripgrep eza fastfetch duf kitty htop numlockx
+        open-vm-tools-desktop fuse gtk3-devel lightdm lightdm-gtk  \
+         btop ripgrep eza fastfetch duf kitty htop numlockx xdg-user-dirs
 
     # Alguns pacotes extras úteis que costumam faltar em setups mínimos
     sudo dnf install -y \
         xset xrandr \
         python3-xcffib python3-cairocffi python3-dbus-next
+
+    # FALTA ARRUMAR:
+    # xwallpaper imagemagick python3-pynvim lazygit starship eza
 }
 
 install_firefox_official() {
@@ -114,6 +117,16 @@ install_qtile() {
         echo "pos_install.sh não encontrado. Edite manualmente depois:"
         echo "   $post_install_script"
     fi    
+}
+
+install_shell_configs() {
+    echo_header "Configurações do shell (.bashrc + .aliases)"
+    # Cria symlink do .bashrc
+    link "$HOME/.src/qtile/" "$HOME/.bashrc"    
+    link "$HOME/.src/qtile/.aliase" "$HOME/.aliase"
+    link "$HOME/.src/qtile/.aliase-fedora" "$HOME/.aliase-fedora"
+
+    echo -e "${YELLOW}Dica:${NC} Rode 'source ~/.bashrc' para aplicar as mudanças agora."
 }
 
 # ==============================================
