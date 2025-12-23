@@ -154,6 +154,7 @@ enable_services
 #install_jetbrains_mono_nerd_font # descomente se quiser a fonte agora
 #install_sddm_sugar_dark          # não recomendado para Fedora + Qtile (LightDM é mais usado)
 install_qtile
+install_shell_configs
 
 echo
 echo "======================================"
