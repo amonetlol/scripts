@@ -74,17 +74,6 @@ enable_services() {
     sudo systemctl enable lightdm
 }
 
-install_jetbrains_mono_nerd_font() {
-    echo "Instalando JetBrains Mono Nerd Font..."
-    mkdir -p ~/.local/share/fonts
-    wget -q -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
-    cd ~/.local/share/fonts
-    unzip -q JetBrainsMono.zip
-    rm JetBrainsMono.zip
-    fc-cache -fv
-    cd - >/dev/null
-}
-
 install_sddm_sugar_dark() {
     echo "Instalando SDDM com tema Sugar Dark..."
     sudo apt install -y sddm
@@ -94,57 +83,36 @@ install_sddm_sugar_dark() {
     sudo sh -c 'echo "[Theme]\nCurrent=sugar-dark" > /etc/sddm.conf'
 }
 
-install_qtile() {
+clone_qtile() {
+    mkdir -p "$HOME/.src"
     local qtile_dir="$HOME/.src/qtile"
     local repo_url="https://github.com/amonetlol/qtile.git"
-    local post_install_script="$qtile_dir/pos_install.sh"
+    local install_qtile_script="$qtile_dir/install_qtile.sh"
 
     echo "→ Iniciando instalação/configuração do qtile (amonetlol fork)"
 
-    # 1. Cria diretório base se não existir
-    mkdir -p "$HOME/.src" || {
-        echo "Erro ao criar diretório ~/.src"
-        return 1
-    }
+    mkdir -p "$HOME/.src" || { echo "Erro ao criar ~/.src"; return 1; }
 
-    # 2. Verifica se já existe o repositório
-    if [ -d "$qtile_dir" ] && [ -d "$qtile_dir/.git" ]; then
-        echo "Diretório $qtile_dir já existe. Tentando atualizar..."
-        cd "$qtile_dir" || return 1
-        git fetch --all
-        git reset --hard origin/main  # ou master/main — ajuste conforme o branch principal
-        git clean -fd
-        echo "Repositório atualizado."
+    echo "Clonando qtile (amonetlol fork) → $qtile_dir"
+       git clone "$repo_url" "$qtile_dir" || { echo "Falha ao clonar"; return 1; }
+       cd "$qtile_dir" || return 1
+
+    if [ -f "$install_qtile_script" ]; then
+        chmod +x "$install_qtile_script" || echo "Aviso: não conseguiu dar permissão em pos_install.sh"
     else
-        # 3. Clona o repositório caso não exista
-        echo "Clonando qtile (amonetlol fork) → $qtile_dir"
-        git clone "$repo_url" "$qtile_dir" || {
-            echo "Falha ao clonar repositório"
-            return 1
-        }
-        cd "$qtile_dir" || return 1
+        echo "Aviso: pos_install.sh não encontrado em $qtile_dir"
     fi
 
-    # 4. Dá permissão de execução no script de pós-instalação
-    if [ -f "$post_install_script" ]; then
-        chmod +x "$post_install_script" || {
-            echo "Não conseguiu dar permissão de execução em $post_install_script"
-            return 1
-        }
-    else
-        echo "Aviso: script pos_install.sh não encontrado em $qtile_dir"
-        echo "Continuando mesmo assim..."
-    fi
-
-    # 5. Abre o script no neovim
-    if [ -f "$post_install_script" ]; then
+    if [ -f "$install_qtile_script" ]; then
         echo "Abrindo pos_install.sh no neovim..."
-        nvim "$post_install_script"
+        nvim "$install_qtile_script"
+        sh "$install_qtile_script"
     else
-        echo "Não foi possível abrir pos_install.sh (arquivo não existe)"
-        echo "Você pode editar manualmente depois: $post_install_script"
-    fi
+        echo "pos_install.sh não encontrado. Edite manualmente depois:"
+        echo "   $install_qtile_script"
+    fi    
 }
+
 
 # ==============================================
 # Execução principal
@@ -160,9 +128,8 @@ install_basic_packages
 install_firefox_official
 install_vscode
 enable_services
-#install_jetbrains_mono_nerd_font
 #install_sddm_sugar_dark
-install_qtile
+clone_qtile
 
 echo
 echo "======================================"
