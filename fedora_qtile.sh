@@ -34,7 +34,7 @@ install_basic_packages() {
 
     # Alguns pacotes extras úteis que costumam faltar em setups mínimos
     sudo dnf install -y \
-        xset xrandr xinput nitrogen picom \
+        xset xrandr picom \
         python3-xcffib python3-cairocffi python3-dbus-next
 }
 
@@ -105,7 +105,7 @@ install_qtile() {
     else
         echo "pos_install.sh não encontrado. Edite manualmente depois:"
         echo "   $post_install_script"
-    fi
+    fi    
 }
 
 # ==============================================
