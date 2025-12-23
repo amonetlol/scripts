@@ -143,7 +143,7 @@ install_qtile() {
 install_shell_configs() {
     echo_header "Configurações do shell (.bashrc + .aliases)"
     # Cria symlink do .bashrc
-    link "$HOME/.src/qtile/" "$HOME/.bashrc"    
+    link "$HOME/.src/qtile/.bashrc" "$HOME/.bashrc"    
     link "$HOME/.src/qtile/.aliase" "$HOME/.aliase"
     link "$HOME/.src/qtile/.aliase-fedora" "$HOME/.aliase-fedora"
 
