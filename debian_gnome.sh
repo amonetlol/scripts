@@ -25,6 +25,10 @@ link() {
     echo -e "${GREEN}Link${NC} $dest → $src"
 }
 
+echo_header() {
+    echo -e "\n${GREEN}===== $1 =====${NC}"
+}
+
 global(){
    mkdir -p "$HOME/.src"
    sudo apt install git -y
