@@ -145,7 +145,7 @@ install_shell_configs() {
     # Cria symlink do .bashrc
     link "$HOME/.src/qtile/.bashrc" "$HOME/.bashrc"    
     link "$HOME/.src/qtile/.aliases" "$HOME/.aliases"
-    link "$HOME/.src/qtile/.aliases-fedora" "$HOME/.aliase-fedora"
+    link "$HOME/.src/qtile/.aliases-fedora" "$HOME/.aliases-fedora"
 
     # 1. Instalar o plugin do DNF para gerenciar repositórios COPR
     sudo dnf install -y 'dnf-command(copr)'
