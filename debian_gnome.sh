@@ -140,40 +140,24 @@ install_shell_configs() {
     ln -sf "$bashrc_src" "$bashrc_dest"
     echo -e "${GREEN}Link${NC} ~/.bashrc → $bashrc_src"
 
-    # Detecção da distro
-    echo -e "${YELLOW}Detectando distro...${NC}"
-    local distro="unknown"
-
-    if [[ -f /etc/nixos/configuration.nix || -d /etc/nixos ]]; then
-        distro="nixos"
-    elif [[ -f /etc/arch-release || -f /etc/artix-release ]]; then
-        distro="arch"
-    elif [[ -f /etc/debian_version ]] || grep -qiE '(ubuntu|debian)' /etc/os-release 2>/dev/null; then
-        distro="debian"
-    elif grep -qiE 'fedora' /etc/os-release 2>/dev/null || [[ -f /etc/fedora-release ]]; then
-        distro="fedora"
-    fi
-
-    echo -e "${GREEN}Distro detectada:${NC} $distro"
-
-    # Arquivo de aliases específico
-    local aliases_file="$DOTFILES_DIR/.aliases-$distro"
-
-    if [[ -f "$aliases_file" ]]; then
-        # Backup simples do .aliases existente (se houver)
-        if [[ -e "$HOME/.aliases" || -L "$HOME/.aliases" ]]; then
-            echo -e "${YELLOW}Backup${NC} ~/.aliases → ~/.aliases.old"
-            mv "$HOME/.aliases" "$HOME/.aliases.old" 2>/dev/null || true
-        fi
-
-        # Cria symlink do .aliases
-        ln -sf "$aliases_file" "$HOME/.aliases"
-        echo -e "${GREEN}Link${NC} ~/.aliases → $aliases_file"
-    else
-        echo -e "${RED}Aviso:${NC} Arquivo $aliases_file não encontrado."
-    fi
+    link "$HOME/.src/qtile/.aliase" "$HOME/.aliase"
+    link "$HOME/.src/qtile/.aliase-debian" "$HOME/.aliase-debian"
 
     echo -e "${YELLOW}Dica:${NC} Rode 'source ~/.bashrc' para aplicar as mudanças agora."
+}
+
+links_configs(){
+    link "$HOME/.src/qtile/config/kitty" "$HOME/.config/kitty"
+    link "$HOME/.src/qtile/config/fastfetch" "$HOME/.config/fastfetch"
+    link "$HOME/.src/qtile/config/alacritty" "$HOME/.config/alacritty"
+    link "$HOME/.src/qtile/config/neofetch" "$HOME/.config/neofetch"
+}
+
+tema_gnome-terminal(){
+    sudo apt install dconf-cli uuid-runtime -y
+    #Reset total dos perfis (isso remove tudo, mas é o que mais resolve):
+    Bashdconf reset -f /org/gnome/terminal/legacy/profiles:/
+    bash -c "$(wget -qO- https://git.io/vQgMr)"
 }
 
 enable_contrib_nonfree
@@ -188,3 +172,5 @@ install_hidden_applications
 install_starship
 install_walls
 install_shell_configs
+links_configs
+tema_gnome-terminal
