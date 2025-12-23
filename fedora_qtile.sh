@@ -137,6 +137,10 @@ install_starship() {
     sudo curl -sS https://starship.rs/install.sh | sh
 }
 
+feh_fedora(){
+    feh --bg-fill '/home/pio/walls/monokai_pro_blue_fedora.png'
+}
+
 # ==============================================
 # Execução principal
 # ==============================================
@@ -153,6 +157,7 @@ enable_services
 clone_qtile
 install_shell_configs
 install_starship
+feh_fedora
 
 echo
 echo "======================================"
