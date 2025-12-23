@@ -14,6 +14,27 @@ sudo sh -c 'echo "fastestmirror=True" >> /etc/dnf/dnf.conf'  # opcional, mas rec
 # Funções
 # ==============================================
 
+link() {
+    local src="$1"
+    local dest="$2"
+    if [[ -L "$dest" && "$(readlink -f "$dest")" == "$src" ]]; then
+        echo -e "${GREEN}OK${NC} $dest -> $(basename "$src")"
+        return
+    fi
+    if [[ -e "$dest" || -L "$dest" ]]; then
+        echo -e "${YELLOW}Backup${NC} $dest -> $dest.bak.$(date +%Y%m%d_%H%M%S)"
+        mv "$dest" "$dest.bak.$(date +%Y%m%d_%H%M%S)"
+    fi
+    mkdir -p "$(dirname "$dest")"
+    ln -sf "$src" "$dest"
+    echo -e "${GREEN}Link${NC} $dest -> $src"
+}
+
+echo_header() {
+    echo -e "\n${GREEN}===== $1 =====${NC}"
+}
+
+
 install_repo(){
     sudo dnf install -y \
     https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
