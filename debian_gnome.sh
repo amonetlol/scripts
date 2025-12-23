@@ -138,6 +138,11 @@ tema_gnome-terminal(){
     bash -c "$(wget -qO- https://git.io/vQgMr)"
 }
 
+install_walls() {
+    echo_header "Fixes e ajustes pessoais"
+    link "$HOME/.config/qtile/walls" "$HOME/walls"
+}
+
 enable_contrib_nonfree
 update_and_upgrade
 install_apps
@@ -151,3 +156,4 @@ install_starship
 install_shell_configs
 links_configs
 tema_gnome-terminal
+install_walls
