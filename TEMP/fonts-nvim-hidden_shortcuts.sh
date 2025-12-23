@@ -45,14 +45,6 @@ fi
 echo -e "${GREEN}Atualizando cache de fontes...${NC}"
 fc-cache -vf
 
-# 8. Walls → ~/walls
-echo -e "${GREEN}Configurando wallpapers...${NC}"
-if [[ -d "$HOME/.config/qtile/walls" ]]; then
-    link "$HOME/.config/qtile/walls" "$HOME/walls"
-else
-    echo -e "${YELLOW}Aviso:${NC} Diretório ~/.config/qtile/walls não encontrado. Pulando link para ~/walls."
-fi
-
 # 9. Instalando AstroNvim
 echo -e "${GREEN}Instalando AstroNvim...${NC}"
 if [[ -d "$HOME/.config/nvim" ]]; then
