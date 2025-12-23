@@ -56,9 +56,9 @@ install_apps() {
 install_flatpak() {
     sudo apt install -y flatpak
     echo "=== Adicionando o repositório Flathub (oficial) ==="
-    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     echo "=== Instalando o Extension Manager (GNOME Extensions) ==="
-    flatpak install -y flathub com.mattjakeman.ExtensionManager
+    sudo flatpak install -y flathub com.mattjakeman.ExtensionManager
 }
 
 install_firefox() {
