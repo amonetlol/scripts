@@ -133,6 +133,10 @@ install_shell_configs() {
     echo -e "${YELLOW}Dica:${NC} Rode 'source ~/.bashrc' para aplicar as mudanças agora."
 }
 
+install_starship() {
+    sudo curl -sS https://starship.rs/install.sh | sh
+}
+
 # ==============================================
 # Execução principal
 # ==============================================
@@ -148,6 +152,7 @@ install_vscode
 enable_services
 clone_qtile
 install_shell_configs
+install_starship
 
 echo
 echo "======================================"
