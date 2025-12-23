@@ -123,6 +123,10 @@ install_shell_configs() {
     echo -e "${YELLOW}Dica:${NC} Rode 'source ~/.bashrc' para aplicar as mudanças agora."
 }
 
+feh_debian(){
+    feh --bg-fill '/home/pio/walls/monokai_pro_blue_debian.png'
+}
+
 
 # ==============================================
 # Execução principal
@@ -141,6 +145,7 @@ enable_services
 #install_sddm_sugar_dark
 clone_qtile
 install_shell_configs
+feh_debian
 
 echo
 echo "======================================"
