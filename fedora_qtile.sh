@@ -82,6 +82,11 @@ enable_services() {
     echo "Habilitando serviços..."
     sudo systemctl enable vmtoolsd
     sudo systemctl enable lightdm
+    # Fedora stuffs
+    # 2. Cria o symlink correto para LightDM
+    sudo ln -sf /usr/lib/systemd/system/lightdm.service /etc/systemd/system/display-manager.service
+    # (opicional) Confirma que o target é graphical
+    sudo systemctl set-default graphical.target
 }
 
 clone_qtile() {
