@@ -94,6 +94,58 @@ install_sddm_sugar_dark() {
     sudo sh -c 'echo "[Theme]\nCurrent=sugar-dark" > /etc/sddm.conf'
 }
 
+install_qtile() {
+    local qtile_dir="$HOME/.src/qtile"
+    local repo_url="https://github.com/amonetlol/qtile.git"
+    local post_install_script="$qtile_dir/pos_install.sh"
+
+    echo "→ Iniciando instalação/configuração do qtile (amonetlol fork)"
+
+    # 1. Cria diretório base se não existir
+    mkdir -p "$HOME/.src" || {
+        echo "Erro ao criar diretório ~/.src"
+        return 1
+    }
+
+    # 2. Verifica se já existe o repositório
+    if [ -d "$qtile_dir" ] && [ -d "$qtile_dir/.git" ]; then
+        echo "Diretório $qtile_dir já existe. Tentando atualizar..."
+        cd "$qtile_dir" || return 1
+        git fetch --all
+        git reset --hard origin/main  # ou master/main — ajuste conforme o branch principal
+        git clean -fd
+        echo "Repositório atualizado."
+    else
+        # 3. Clona o repositório caso não exista
+        echo "Clonando qtile (amonetlol fork) → $qtile_dir"
+        git clone "$repo_url" "$qtile_dir" || {
+            echo "Falha ao clonar repositório"
+            return 1
+        }
+        cd "$qtile_dir" || return 1
+    fi
+
+    # 4. Dá permissão de execução no script de pós-instalação
+    if [ -f "$post_install_script" ]; then
+        chmod +x "$post_install_script" || {
+            echo "Não conseguiu dar permissão de execução em $post_install_script"
+            return 1
+        }
+    else
+        echo "Aviso: script pos_install.sh não encontrado em $qtile_dir"
+        echo "Continuando mesmo assim..."
+    fi
+
+    # 5. Abre o script no neovim
+    if [ -f "$post_install_script" ]; then
+        echo "Abrindo pos_install.sh no neovim..."
+        nvim "$post_install_script"
+    else
+        echo "Não foi possível abrir pos_install.sh (arquivo não existe)"
+        echo "Você pode editar manualmente depois: $post_install_script"
+    fi
+}
+
 # ==============================================
 # Execução principal
 # ==============================================
@@ -110,6 +162,7 @@ install_vscode
 enable_services
 #install_jetbrains_mono_nerd_font
 #install_sddm_sugar_dark
+install_qtile
 
 echo
 echo "======================================"
