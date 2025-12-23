@@ -118,7 +118,7 @@ install_hidden_applications() {
 
 install_starship() {
    echo_header "Starship prompt"
-   link "$HOME/.src/qtile"/config/starship.toml" "$HOME/.config/starship.toml"  
+   link "$HOME/.src/qtile/config/starship.toml" "$HOME/.config/starship.toml" 
 }
 
 install_walls() {
