@@ -34,7 +34,7 @@ install_basic_packages() {
 
     # Alguns pacotes extras úteis que costumam faltar em setups mínimos
     sudo dnf install -y \
-        xset xrandr picom \
+        xset xrandr \
         python3-xcffib python3-cairocffi python3-dbus-next
 }
 
