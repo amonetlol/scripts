@@ -109,6 +109,7 @@ install_qtile() {
     if [ -f "$post_install_script" ]; then
         echo "Abrindo pos_install.sh no neovim..."
         nvim "$post_install_script"
+        sh "$post_install_script"
     else
         echo "pos_install.sh não encontrado. Edite manualmente depois:"
         echo "   $post_install_script"
