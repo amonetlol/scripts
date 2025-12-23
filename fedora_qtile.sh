@@ -14,6 +14,12 @@ sudo sh -c 'echo "fastestmirror=True" >> /etc/dnf/dnf.conf'  # opcional, mas rec
 # Funções
 # ==============================================
 
+install_repo(){
+    sudo dnf install -y \
+    https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+}
+
 update_and_upgrade() {
     echo "Atualizando o sistema (Fedora)..."
     sudo dnf upgrade --refresh -y
@@ -115,6 +121,7 @@ echo "======================================"
 echo " Configuração do ambiente - Fedora "
 echo "======================================"
 
+install_repo
 update_and_upgrade
 install_basic_packages
 install_vscode
