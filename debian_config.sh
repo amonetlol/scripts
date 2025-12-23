@@ -89,6 +89,7 @@ sudo apt install -y \
     fuse \
     libgtk-3-dev \
     lightdm \
+    slick-greeter \
     lazygit \
     starship \
     btop \
