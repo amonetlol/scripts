@@ -113,33 +113,10 @@ install_starship() {
     link "$HOME/.src/qtile/config/starship.toml" "$HOME/.config/starship.toml"
 }
 
-install_walls() {
-    echo_header "Fixes e ajustes pessoais"
-    link "$HOME/.config/qtile/walls" "$HOME/walls"
-}
-
 install_shell_configs() {
     echo_header "Configurações do shell (.bashrc + .aliases)"
-
-    local bashrc_src="$DOTFILES_DIR/.bashrc"
-    local bashrc_dest="$HOME/.bashrc"
-
-    # Se o .bashrc fonte não existe, não faz nada
-    if [[ ! -f "$bashrc_src" ]]; then
-        echo -e "${YELLOW}Aviso:${NC} $bashrc_src não encontrado. Pulando configuração do bashrc."
-        return
-    fi
-
-    # Backup simples do .bashrc existente (se houver)
-    if [[ -e "$bashrc_dest" || -L "$bashrc_dest" ]]; then
-        echo -e "${YELLOW}Backup${NC} ~/.bashrc → ~/.bashrc.old"
-        mv "$bashrc_dest" "$bashrc_dest.old" || true
-    fi
-
     # Cria symlink do .bashrc
-    ln -sf "$bashrc_src" "$bashrc_dest"
-    echo -e "${GREEN}Link${NC} ~/.bashrc → $bashrc_src"
-
+    link "$HOME/.src/qtile/" "$HOME/.bashrc"    
     link "$HOME/.src/qtile/.aliase" "$HOME/.aliase"
     link "$HOME/.src/qtile/.aliase-debian" "$HOME/.aliase-debian"
 
@@ -151,6 +128,7 @@ links_configs(){
     link "$HOME/.src/qtile/config/fastfetch" "$HOME/.config/fastfetch"
     link "$HOME/.src/qtile/config/alacritty" "$HOME/.config/alacritty"
     link "$HOME/.src/qtile/config/neofetch" "$HOME/.config/neofetch"
+    link "$HOME/.src/qtile/config/qtile/walls" "$HOME/walls"
 }
 
 tema_gnome-terminal(){
@@ -170,7 +148,6 @@ install_fonts
 install_nvim
 install_hidden_applications
 install_starship
-install_walls
 install_shell_configs
 links_configs
 tema_gnome-terminal
