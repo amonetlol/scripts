@@ -118,7 +118,7 @@ install_shell_configs() {
     # Cria symlink do .bashrc
     link "$HOME/.src/qtile/.bashrc" "$HOME/.bashrc"    
     link "$HOME/.src/qtile/.aliases" "$HOME/.aliases"
-    link "$HOME/.src/qtile/.aliases-debina" "$HOME/.aliases-debian"
+    link "$HOME/.src/qtile/.aliases-debian" "$HOME/.aliases-debian"
 
     echo -e "${YELLOW}Dica:${NC} Rode 'source ~/.bashrc' para aplicar as mudanças agora."
 }
