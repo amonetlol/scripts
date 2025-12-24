@@ -18,6 +18,11 @@ aur_helper(){
     
 }
 
+speed(){
+    sudo pacmann -S --needed --noconfirm reflector rsync
+    sudo reflector --country Brazil --latest 10 --sort rate --save /etc/pacman.d/mirrorlist
+}
+
 
 # Arch
 packages="
@@ -254,6 +259,7 @@ bye() {
 # função
 pacman_parallel_downloads
 pre_install
+speed
 aur_helper
 install
 vm
