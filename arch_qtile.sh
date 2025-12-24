@@ -260,6 +260,6 @@ install
 vm
 greeter_choice
 clone_qtile
-install_shell_config
+install_shell_configs
 feh_arch
 bye
