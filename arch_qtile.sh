@@ -203,10 +203,6 @@ greeter_choice() {
     esac
 }
 
-fix(){
-    xdg-user-dirs-update
-}
-
 clone_qtile() {
     mkdir -p "$HOME/.src"
     local qtile_dir="$HOME/.src/qtile"
@@ -263,7 +259,6 @@ aur_helper
 install
 vm
 greeter_choice
-fix
 clone_qtile
 install_shell_config
 feh_arch
