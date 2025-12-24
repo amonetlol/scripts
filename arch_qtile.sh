@@ -3,6 +3,29 @@ set -euo pipefail
 
 # base-devel archlinux-keyring
 
+# ----- GLOBAL ----------
+link() {
+    local src="$1"
+    local dest="$2"
+    if [[ -L "$dest" && "$(readlink -f "$dest")" == "$src" ]]; then
+        echo -e "${GREEN}OK${NC} $dest -> $(basename "$src")"
+        return
+    fi
+    if [[ -e "$dest" || -L "$dest" ]]; then
+        echo -e "${YELLOW}Backup${NC} $dest -> $dest.bak.$(date +%Y%m%d_%H%M%S)"
+        mv "$dest" "$dest.bak.$(date +%Y%m%d_%H%M%S)"
+    fi
+    mkdir -p "$(dirname "$dest")"
+    ln -sf "$src" "$dest"
+    echo -e "${GREEN}Link${NC} $dest -> $src"
+}
+
+echo_header() {
+    echo -e "\n${GREEN}===== $1 =====${NC}"
+}
+
+# ---------- FIM GLOBAL ------------------
+
 pre_install(){
     echo 'MAKEFLAGS="-j$(nproc)"' | sudo tee -a /etc/makepkg.conf
     sudo pacman -S --needed --noconfirm archlinux-keyring
