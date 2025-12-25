@@ -185,9 +185,38 @@ pacman_parallel_downloads() {
     echo "   → ILoveCandy ativado (pacman com animação bonitinha)"
 }
 
-vm(){
-    yay -S --needed --noconfirm open-vm-tools fuse2 gtkmm3
-    sudo systemctl enable --now vmtoolsd
+vm() {
+    # Verifica se open-vm-tools já está instalado
+    if pacman -Qs open-vm-tools > /dev/null; then
+        echo "open-vm-tools já está instalado."
+    else
+        echo "Instalando open-vm-tools e dependências relacionadas..."
+        yay -S --needed --noconfirm open-vm-tools fuse2 gtkmm3 || {
+            echo "Erro ao instalar os pacotes VM Tools."
+            return 1
+        }
+    fi
+
+    # Verifica se o serviço vmtoolsd está ativo
+    if systemctl is-active --quiet vmtoolsd; then
+        echo "vmtoolsd já está ativo."
+    else
+        echo "Ativando e iniciando o serviço vmtoolsd..."
+        sudo systemctl enable --now vmtoolsd || {
+            echo "Erro ao ativar/iniciar vmtoolsd."
+            return 1
+        }
+    fi
+
+    # Opcional: verifica se o serviço está realmente rodando após tentativa
+    if systemctl is-active --quiet vmtoolsd; then
+        echo "vmtoolsd está ativo e funcionando corretamente."
+    else
+        echo "Aviso: vmtoolsd não pôde ser iniciado."
+        return 1
+    fi
+
+    echo "Configuração de VM Tools concluída com sucesso!"
 }
 
 install(){    
@@ -256,6 +285,34 @@ greeter_choice() {
     esac
 }
 
+display_manager() {
+    # Verifica se LightDM está habilitado
+    if systemctl is-enabled --quiet lightdm; then
+        echo "LightDM já está habilitado como display manager."
+        return 0
+    fi
+
+    # Verifica se SDDM está habilitado
+    if systemctl is-enabled --quiet sddm; then
+        echo "SDDM já está habilitado como display manager."
+        return 0
+    fi
+
+    # Se nenhum dos dois estiver habilitado, chama greeter_choice()
+    echo "Nenhum display manager (LightDM ou SDDM) encontrado habilitado."
+    echo "Executando greeter_choice() para configurar..."
+    
+    greeter_choice
+    
+    # Opcional: verifica novamente após a execução
+    if systemctl is-enabled --quiet lightdm || systemctl is-enabled --quiet sddm; then
+        echo "Display manager configurado com sucesso pela greeter_choice()."
+    else
+        echo "Aviso: greeter_choice() foi executada, mas nenhum display manager foi habilitado."
+        return 1
+    fi
+}
+
 clone_qtile() {
     mkdir -p "$HOME/.src"
     local qtile_dir="$HOME/.src/qtile"
@@ -311,7 +368,7 @@ speed
 aur_helper
 install
 vm
-greeter_choice
+display_manager
 clone_qtile
 install_shell_configs
 feh_arch
