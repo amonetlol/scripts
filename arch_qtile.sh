@@ -255,7 +255,7 @@ greeter_choice() {
             ;;
         2)
             echo "Instalando e configurando LightDM com slick-greeter..."
-            yay -S --needed --noconfirm lightdm lightdm-slick-greeter  # lightdm-slick-greeter está nos repositórios oficiais (extra)
+            yay -S --needed --noconfirm lightdm lightdm-gtk-greeter lightdm-slick-greeter  # lightdm-slick-greeter está nos repositórios oficiais (extra)
 
             # Configurar greeter-session=slick-greeter em /etc/lightdm/lightdm.conf
             sudo mkdir -p /etc/lightdm
