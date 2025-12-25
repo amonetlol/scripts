@@ -263,7 +263,7 @@ greeter_choice() {
                 echo "[Seat:*]" | sudo tee /etc/lightdm/lightdm.conf > /dev/null
             fi
             if sudo grep -q "^greeter-session=" /etc/lightdm/lightdm.conf; then
-                sudo sed -i 's/^greeter-session=.*/greeter-session=slick-greeter/' /etc/lightdm/lightdm.conf
+                sudo sed -i 's/^greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
             else
                 echo "greeter-session=slick-greeter" | sudo tee -a /etc/lightdm/lightdm.conf > /dev/null
             fi
@@ -354,7 +354,8 @@ install_shell_configs() {
 }
 
 feh_arch(){
-    feh --bg-fill '/home/pio/walls/monokai_pro_blue_arch.png'
+    #feh --bg-fill '/home/pio/walls/monokai_pro_blue_arch.png'
+    echo 'feh --no-fehbg --bg-fill "/home/pio/walls/monokai_pro_blue_arch.png"' > ~/.fehbg
 }
 
 bye() {
