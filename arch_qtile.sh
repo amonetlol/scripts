@@ -356,6 +356,7 @@ install_shell_configs() {
 feh_arch(){
     #feh --bg-fill '/home/pio/walls/monokai_pro_blue_arch.png'
     echo 'feh --no-fehbg --bg-fill "/home/pio/walls/monokai_pro_blue_arch.png"' > ~/.fehbg
+    chmod +x ~/.fehbg
 }
 
 bye() {
