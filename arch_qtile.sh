@@ -37,13 +37,38 @@ pre_install(){
     sudo pacman -S --needed --noconfirm base-devel
 }
 
-aur_helper(){    
-    if [ ! -d "$HOME/.src" ]; then
-        mkdir -p "$HOME/.src" && cd "$HOME/.src" && git clone https://aur.archlinux.org/yay-bin && cd yay-bin && makepkg --noconfirm -si        
-    else
-        cd "$HOME/.src" && git clone https://aur.archlinux.org/yay-bin && cd yay-bin && makepkg --noconfirm -si
-    fi  
-    
+aur_helper() {
+    # Verifica se o yay já está instalado
+    if command -v yay >/dev/null 2>&1; then
+        echo "yay já está instalado. Nada a fazer."
+        return 0
+    fi
+
+    # Cria o diretório de fontes se não existir
+    mkdir -p "$HOME/.src"
+    cd "$HOME/.src" || return 1
+
+    # Se a pasta yay-bin já existir, remove para garantir um clone limpo
+    if [ -d "yay-bin" ]; then
+        echo "Pasta yay-bin existente detectada. Removendo para baixar uma versão nova..."
+        rm -rf yay-bin
+    fi
+
+    # Clone o repositório e instale
+    echo "Clonando yay-bin do AUR..."
+    git clone https://aur.archlinux.org/yay-bin.git yay-bin || {
+        echo "Erro ao clonar o repositório yay-bin."
+        return 1
+    }
+
+    cd yay-bin || return 1
+    echo "Construindo e instalando yay..."
+    makepkg --noconfirm -si || {
+        echo "Erro durante a compilação/instalação do yay."
+        return 1
+    }
+
+    echo "yay instalado com sucesso!"
 }
 
 speed(){
