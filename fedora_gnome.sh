@@ -154,7 +154,7 @@ install_flatpak() {
 
 
 share(){   
-    local dir="$HOME/.src/qtile"
+    local dir="$HOME/.src/scripts"
     local install_dir="$_dir/share.sh"
 
     if [ -f "$install_dir" ]; then
