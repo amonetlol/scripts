@@ -152,29 +152,20 @@ install_flatpak() {
     sudo flatpak install -y flathub com.mattjakeman.ExtensionManager
 }
 
-install_fonts() {
-    echo_header "Instalação de fontes"
-    if [[ -d "$HOME/.fonts" && -d "$HOME/.fonts/.git" ]]; then
-        echo -e "${YELLOW}Atualizando fontes existentes...${NC}"
-        git -C "$HOME/.fonts" pull
+
+share(){   
+    local dir="$HOME/.src/qtile"
+    local install_dir="$_dir/share.sh"
+
+    if [ -f "$install_dir" ]; then
+        chmod +x "$install_dir" || echo "Aviso: não conseguiu dar permissão em share.sh"
+        sh "$install_dir"
     else
-        if [[ -d "$HOME/.fonts" ]]; then
-            mv "$HOME/.fonts" "$HOME/.fonts.bak.$(date +%Y%m%d_%H%M%S)"
-        fi
-        git clone https://github.com/amonetlol/fonts "$HOME/.fonts"
+        echo "Aviso: share.sh não encontrado em $install_dir"
     fi
-    fc-cache -vf
-    echo -e "${GREEN}Cache de fontes atualizado${NC}"
 }
 
-install_nvim() {
-    echo_header "AstroNvim (template limpo)"
-    git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
-    rm -rf ~/.config/nvim/.git
-    echo "AstroNvim clonado. Abra o nvim para finalizar a instalação inicial."
-}
-
-install_hidden_applications() {
+hidden_gnome() {
     echo_header "Aplicações ocultas"
     link "$HOME/.src/qtile/local/share/applications" "$HOME/.local/share/applications"
 
@@ -184,8 +175,6 @@ install_hidden_applications() {
 }
 
 install_starship() {
-    echo_header "Starship prompt"
-    link "$HOME/.src/qtile/config/starship.toml" "$HOME/.config/starship.toml"
     sudo curl -sS https://starship.rs/install.sh | sh
 }
 
@@ -208,24 +197,6 @@ install_shell_configs() {
     echo -e "${YELLOW}Dica:${NC} Rode 'source ~/.bashrc' para aplicar as mudanças agora."
 }
 
-links_configs(){
-    link "$HOME/.src/qtile/config/kitty" "$HOME/.config/kitty"
-    link "$HOME/.src/qtile/config/fastfetch" "$HOME/.config/fastfetch"
-    link "$HOME/.src/qtile/config/alacritty" "$HOME/.config/alacritty"
-    link "$HOME/.src/qtile/config/neofetch" "$HOME/.config/neofetch"
-    link "$HOME/.src/qtile/config/qtile/walls" "$HOME/walls"
-}
-
-bin_fedora(){
-    #mkdir -p "$HOME/.bin"
-    #link "$HOME/.src/qtile/bin/sexyFetch.sh" "$HOME/.bin/sexyFetch.sh"
-    #ln -sf "$HOME/.src/qtile/bin" "$HOME/.bin"
-    ln -sf "$HOME/.src/qtile/bin" "$HOME/.bin"
-    cd "$HOME/.bin" && chmod +x *    
-}
-
-
-
 gnome_tweaks(){
   # -- Button --
   gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,maximize,close'
@@ -236,21 +207,59 @@ gnome_tweaks(){
   
   # -- Desligamento de Tela --
   gsettings set org.gnome.desktop.session idle-delay 0
+
+  #Doar Gnome:
+  gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
+
+  #Super + Q = close app
+  gsettings set org.gnome.desktop.wm.keybindings close "['<Super>q', '<Alt>F4']"
+
+  # Atalhos: Kitty e Alacritty
+  # Primeiro: Alacritty com Shift+Super+Enter
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Alacritty'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command 'alacritty'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding '<Shift><Super>Return'
+
+  # Segundo: Kitty com Super+Enter
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name 'Kitty'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command 'kitty'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding '<Super>Return'
+
+  # Ativa a lista de atalhos personalizados
+  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
+
+  #Wallpaper Fedora
+  gsettings set org.gnome.desktop.background picture-uri "file:///home/pio/walls/monokai_pro_blue_fedora.png"
+  gsettings set org.gnome.desktop.background picture-uri-dark "file:///home/pio/walls/monokai_pro_blue_fedora.png"
 }
+
+rice()  
+  local dir="$HOME/.src/scripts/rice"
+  local install_dir="$_dir/rice.sh"
+  local setrice="$_dir/set_rice.sh"
+
+  if [ -f "$install_dir" ]; then
+        chmod +x "$install_dir" || echo "Aviso: não conseguiu dar permissão em share.sh"
+        sh "$install_dir"
+        chmod +x "$setrice"
+        sh "$setrice"
+    else
+        echo "Aviso: share.sh não encontrado em $install_dir"
+    fi
 
 dnf_tweaks
 install_repo
-# install_repo_extra #Nvidia e Steam
-# disable_repo_extra #Nvidia e Steam
+#install_repo_extra #Nvidia
+#disable_repo_extra #Nvidia
 debloat
 update_and_upgrade
 install_basic_packages
 install_vscode
 install_flatpak
-install_fonts
-install_nvim
-install_hidden_applications
+share #share Configs
+hidden_gnome
 install_starship
 install_shell_configs
-links_configs
 gnome_tweaks
+rice
+
