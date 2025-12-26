@@ -168,6 +168,10 @@ tema_gnome-terminal(){
     bash -c "$(wget -qO- https://git.io/vQgMr)"
 }
 
+rice2(){
+    echo -e "${YELLOW}Execute o ./rice/rice.sh e set_rice.sh manualmente ${NC}"
+}
+
 rice(){  
   local zip_in="$HOME/.src/scripts/rice/rice.sh"
   local setrice="$HOME/.src/scripts/rice/set_rice.sh"
@@ -198,7 +202,7 @@ install_shell_configs
 gnome_tweaks
 debian_usertheme
 tema_gnome-terminal
-rice
+rice2
 
 # -- Conteudo share: --
 #share_fonts
