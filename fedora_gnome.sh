@@ -233,7 +233,7 @@ gnome_tweaks(){
   gsettings set org.gnome.desktop.background picture-uri-dark "file:///home/pio/walls/monokai_pro_blue_fedora.png"
 }
 
-rice()  
+rice(){  
   local dir="$HOME/.src/scripts/rice"
   local install_dir="$_dir/rice.sh"
   local setrice="$_dir/set_rice.sh"
@@ -246,6 +246,7 @@ rice()
     else
         echo "Aviso: share.sh não encontrado em $install_dir"
     fi
+}
 
 dnf_tweaks
 install_repo
