@@ -28,7 +28,15 @@ echo_header() {
 
 global() {
     mkdir -p "$HOME/.src"
-    sudo apt install git -y
+    if command -v git >/dev/null 2>&1; then
+        # echo "Git já está instalado."
+        # git --version
+    else
+        # echo "Git não encontrado. Instalando..."
+        sudo dnf install -y git
+        # echo "Git instalado com sucesso."
+        # git --version
+    fi
     git clone https://github.com/amonetlol/qtile.git "$HOME/.src/qtile"
 }
 
