@@ -123,8 +123,9 @@ gnome_tweaks(){
   # -- Desligamento de Tela --
   gsettings set org.gnome.desktop.session idle-delay 0
 
+  # Não tem ainda no Debian 13
   # Doar Gnome:
-  gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
+  # gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
 
   # Super + Q = close app
   gsettings set org.gnome.desktop.wm.keybindings close "['<Super>q', '<Alt>F4']"
