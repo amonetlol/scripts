@@ -236,7 +236,7 @@ dnf_tweaks
 install_repo
 # install_repo_extra #Nvidia e Steam
 # disable_repo_extra #Nvidia e Steam
-----------------REMOVE DEBLOAT
+debloat
 update_and_upgrade
 install_basic_packages
 install_vscode
