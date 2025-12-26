@@ -45,7 +45,7 @@ DOTFILES_DIR="$HOME/.src/qtile"
 
 # ------------- Funções -------------
 
-install_fonts() {
+share_fonts() {
     echo_header "Instalação de fontes"
     if [[ -d "$HOME/.fonts" && -d "$HOME/.fonts/.git" ]]; then
         echo -e "${YELLOW}Atualizando fontes existentes...${NC}"
@@ -93,6 +93,14 @@ share_links_configs(){
     cd "$HOME/.bin" && chmod +x *
 }
 
-share_fix(){
+share_ufetch(){
   ~/.bin/get_ufetch
 }
+
+share_fonts
+share_nvim
+share_hidden_applications
+share_starship_config
+share_links_configs
+share_ufetch
+
