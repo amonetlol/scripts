@@ -114,7 +114,7 @@ install_basic_packages() {
     echo "Instalando pacotes básicos para ambiente Qtile..."
     sudo dnf install -y \
         git wget neovim xclip alacritty luarocks bat jq findutils bc lua lua-devel python3-pip wl-clipboard \
-        tree-sitter-cli npm nodejs python3-neovim fd-find btop htop ripgrep fastfetch duf coreutils kitty gnome-tweaks screenfetch --skip-unavailable
+        tree-sitter-cli npm nodejs python3-neovim fd-find btop htop ripgrep fastfetch duf coreutils kitty gnome-tweaks screenfetch gnome-shell-extension-user-theme --skip-unavailable
 
     # Falta: lazygit starship
 }
@@ -217,6 +217,10 @@ gnome_tweaks(){
   gsettings set org.gnome.desktop.background picture-uri-dark "file:///home/pio/walls/monokai_pro_blue_fedora.png"
 }
 
+fedora_usertheme(){
+  gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
+}
+
 rice(){  
   local zip_in="$HOME/.src/scripts/rice/rice.sh"
   local setrice="$HOME/.src/scripts/rice/set_rice.sh"
@@ -249,5 +253,19 @@ hidden_gnome
 install_starship
 install_shell_configs
 gnome_tweaks
+fedora_usertheme
 rice
+
+# -- Conteudo share: --
+#share_fonts
+#share_nvim
+#share_hidden_applications
+#share_starship_config
+#share_links_configs
+#share_ufetch
+
+# -- Conteudo set_rice: --
+# Tema: WhiteSur-Dark-solid
+# Icone: McMojave-circle-black
+# Cursor: Afterglow-Cursors
 
