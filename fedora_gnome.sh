@@ -26,38 +26,6 @@ echo_header() {
     echo -e "\n${GREEN}===== $1 =====${NC}"
 }
 
-# versão FINAL
-global() {
-    mkdir -p "$HOME/.src"
-    if command -v git >/dev/null 2>&1; then
-        echo "Git já está instalado."
-        # git --version
-    else
-        # echo "Git não encontrado. Instalando..."
-        sudo dnf install -y git
-        # echo "Git instalado com sucesso."
-        # git --version
-    fi
-    # Diretório de destino
-    DEST="$HOME/.src/qtile"
-
-    # Se a pasta existir, remove recursivamente
-    if [ -d "$DEST" ]; then
-       echo "Pasta $DEST já existe. Removendo..."
-        rm -rf "$DEST"
-    fi
-
-    # Cria o diretório pai se necessário (opcional, mas útil)
-    mkdir -p "$(dirname "$DEST")"
-
-    # Clona o repositório
-    echo "Clonando Qtile para $DEST..."
-    git clone https://github.com/amonetlol/qtile.git "$DEST"
-}
-
-global
-DOTFILES_DIR="$HOME/.src/qtile"
-
 # ------------- Funções -------------
 dnf_tweaks() {
     sudo sh -c 'echo "max_parallel_downloads=20" >> /etc/dnf/dnf.conf'
