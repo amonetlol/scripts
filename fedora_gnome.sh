@@ -186,19 +186,19 @@ gnome_tweaks(){
   gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,maximize,close'
 
   # -- Plano de energia --
-  tuned-adm profile virtual-guest # Para VM
-  # tuned-adm profile throughput-performance # Desempenho
+  # tuned-adm profile virtual-guest # Para VM
+  tuned-adm profile throughput-performance # Desempenho
   
   # -- Desligamento de Tela --
   gsettings set org.gnome.desktop.session idle-delay 0
 
-  #Doar Gnome:
+  # Doar Gnome:
   gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
 
-  #Super + Q = close app
+  # Super + Q = close app
   gsettings set org.gnome.desktop.wm.keybindings close "['<Super>q', '<Alt>F4']"
 
-  # Atalhos: Kitty e Alacritty
+  # Atalhos: Kitty / Alacritty / Firefox
   # Primeiro: Alacritty com Shift+Super+Enter
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Alacritty'
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command 'alacritty'
@@ -209,7 +209,7 @@ gnome_tweaks(){
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command 'kitty'
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding '<Super>Return'
 
-  # Terceiro: Firefox com Super+Enter
+  # Terceiro: Firefox com Super+W
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name 'Firefox'
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command 'firefox'
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding '<Super>W'
@@ -217,7 +217,7 @@ gnome_tweaks(){
   # Ativa a lista de atalhos personalizados
   gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
 
-  #Wallpaper Fedora
+  # Wallpaper Fedora
   gsettings set org.gnome.desktop.background picture-uri "file:///home/pio/walls/monokai_pro_blue_fedora.png"
   gsettings set org.gnome.desktop.background picture-uri-dark "file:///home/pio/walls/monokai_pro_blue_fedora.png"
 }
