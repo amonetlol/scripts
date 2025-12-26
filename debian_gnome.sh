@@ -111,8 +111,14 @@ gnome_tweaks(){
   gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,maximize,close'
 
   # -- Plano de energia --
+  # ----- Tuned-adm :: Fedora e mais novos
+  # tuned-adm list  ## lista os planos disponiveis
   # tuned-adm profile virtual-guest # Para VM
-  tuned-adm profile throughput-performance # Desempenho
+  #tuned-adm profile throughput-performance # Desempenho
+  # ---- Debian 13 ainda não tem perfomance
+  #powerprofilesctl set performance
+  # ---- Debian 13: é o que tem
+  powerprofilesctl set balanced
   
   # -- Desligamento de Tela --
   gsettings set org.gnome.desktop.session idle-delay 0
