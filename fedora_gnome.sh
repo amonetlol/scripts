@@ -26,6 +26,7 @@ echo_header() {
     echo -e "\n${GREEN}===== $1 =====${NC}"
 }
 
+# versão FINAL
 global() {
     mkdir -p "$HOME/.src"
     if command -v git >/dev/null 2>&1; then
@@ -37,7 +38,21 @@ global() {
         # echo "Git instalado com sucesso."
         # git --version
     fi
-    git clone https://github.com/amonetlol/qtile.git "$HOME/.src/qtile"
+    # Diretório de destino
+    DEST="$HOME/.src/qtile"
+
+    # Se a pasta existir, remove recursivamente
+    if [ -d "$DEST" ]; then
+       echo "Pasta $DEST já existe. Removendo..."
+        rm -rf "$DEST"
+    fi
+
+    # Cria o diretório pai se necessário (opcional, mas útil)
+    mkdir -p "$(dirname "$DEST")"
+
+    # Clona o repositório
+    echo "Clonando Qtile para $DEST..."
+    git clone https://github.com/amonetlol/qtile.git "$DEST"
 }
 
 global
