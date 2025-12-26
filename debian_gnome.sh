@@ -26,15 +26,7 @@ echo_header() {
     echo -e "\n${GREEN}===== $1 =====${NC}"
 }
 
-global() {
-    mkdir -p "$HOME/.src"
-    sudo apt install git -y
-    git clone https://github.com/amonetlol/qtile.git "$HOME/.src/qtile"
-}
-
-global
-DOTFILES_DIR="$HOME/.src/qtile"
-
+# ------------- Funções -------------
 enable_contrib_nonfree() {
     echo "Ativando repositórios contrib e non-free..."
     sudo sed -i 's/main$/main contrib non-free non-free-firmware/' /etc/apt/sources.list
@@ -50,25 +42,7 @@ install_apps() {
     sudo apt install -y \
         wget neovim xclip gcc luarocks lua5.1 python3-pip python3-pynvim \
         tree-sitter-cli npm nodejs fd-find lazygit starship btop ripgrep \
-        eza fastfetch duf kitty htop wl-clipboard
-}
-
-install_flatpak() {
-    sudo apt install -y flatpak
-    echo "=== Adicionando o repositório Flathub (oficial) ==="
-    sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    echo "=== Instalando o Extension Manager (GNOME Extensions) ==="
-    sudo flatpak install -y flathub com.mattjakeman.ExtensionManager
-}
-
-install_firefox() {
-    echo "Instalando Firefox estável (Mozilla oficial)..."
-    sudo apt remove firefox-esr -y
-    wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc >/dev/null
-    echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | \
-        sudo tee /etc/apt/sources.list.d/mozilla.list >/dev/null
-    sudo apt update -qq
-    sudo apt install -y firefox
+        eza fastfetch duf kitty alacritty htop wl-clipboard gnome-shell-extension-user-theme screenfetch
 }
 
 install_vscode() {
@@ -81,36 +55,45 @@ install_vscode() {
     sudo apt install -y code
 }
 
-install_fonts() {
-    echo_header "Instalação de fontes"
-    if [[ -d "$HOME/.fonts" && -d "$HOME/.fonts/.git" ]]; then
-        echo -e "${YELLOW}Atualizando fontes existentes...${NC}"
-        git -C "$HOME/.fonts" pull
+install_flatpak() {
+    sudo apt install -y flatpak
+    echo "=== Adicionando o repositório Flathub (oficial) ==="
+    sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    echo "=== Instalando o Extension Manager (GNOME Extensions) ==="
+    sudo flatpak install -y flathub com.mattjakeman.ExtensionManager
+}
+
+# -- Debian Stuffs --
+install_firefox() {
+    echo "Instalando Firefox estável (Mozilla oficial)..."
+    sudo apt remove firefox-esr -y
+    wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc >/dev/null
+    echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | \
+        sudo tee /etc/apt/sources.list.d/mozilla.list >/dev/null
+    sudo apt update -qq
+    sudo apt install -y firefox
+}
+
+share(){   
+    local sharerice="$HOME/.src/scripts/share.sh"
+
+    if [ -f "$sharerice" ]; then
+        echo "+x sharerice"
+        chmod +x "$sharerice" || echo "Aviso: não conseguiu dar permissão em share.sh"
+        echo "sh sharerice"
+        sh "$sharerice"
     else
-        if [[ -d "$HOME/.fonts" ]]; then
-            mv "$HOME/.fonts" "$HOME/.fonts.bak.$(date +%Y%m%d_%H%M%S)"
-        fi
-        git clone https://github.com/amonetlol/fonts "$HOME/.fonts"
+        echo "Aviso: share.sh não encontrado em $sharerice"
     fi
-    fc-cache -vf
-    echo -e "${GREEN}Cache de fontes atualizado${NC}"
 }
 
-install_nvim() {
-    echo_header "AstroNvim (template limpo)"
-    git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
-    rm -rf ~/.config/nvim/.git
-    echo "AstroNvim clonado. Abra o nvim para finalizar a instalação inicial."
-}
-
-install_hidden_applications() {
+hidden_gnome() {
     echo_header "Aplicações ocultas"
     link "$HOME/.src/qtile/local/share/applications" "$HOME/.local/share/applications"
-}
 
-install_starship() {
-    echo_header "Starship prompt"
-    link "$HOME/.src/qtile/config/starship.toml" "$HOME/.config/starship.toml"
+    # Fix Gnome
+    rm -rf "$HOME/.local/share/applications/Alacritty.desktop"
+    rm -rf "$HOME/.local/share/applications/kitty.desktop"
 }
 
 install_shell_configs() {
@@ -123,37 +106,102 @@ install_shell_configs() {
     echo -e "${YELLOW}Dica:${NC} Rode 'source ~/.bashrc' para aplicar as mudanças agora."
 }
 
-links_configs(){
-    link "$HOME/.src/qtile/config/kitty" "$HOME/.config/kitty"
-    link "$HOME/.src/qtile/config/fastfetch" "$HOME/.config/fastfetch"
-    link "$HOME/.src/qtile/config/alacritty" "$HOME/.config/alacritty"
-    link "$HOME/.src/qtile/config/neofetch" "$HOME/.config/neofetch"
-    link "$HOME/.src/qtile/config/qtile/walls" "$HOME/walls"
+gnome_tweaks(){
+  # -- Button --
+  gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,maximize,close'
+
+  # -- Plano de energia --
+  # tuned-adm profile virtual-guest # Para VM
+  tuned-adm profile throughput-performance # Desempenho
+  
+  # -- Desligamento de Tela --
+  gsettings set org.gnome.desktop.session idle-delay 0
+
+  # Doar Gnome:
+  gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
+
+  # Super + Q = close app
+  gsettings set org.gnome.desktop.wm.keybindings close "['<Super>q', '<Alt>F4']"
+
+  # Atalhos: Kitty / Alacritty / Firefox
+  # Primeiro: Alacritty com Shift+Super+Enter
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name 'Alacritty'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command 'alacritty'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding '<Shift><Super>Return'
+
+  # Segundo: Kitty com Super+Enter
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ name 'Kitty'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ command 'kitty'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/ binding '<Super>Return'
+
+  # Terceiro: Firefox com Super+W
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name 'Firefox'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command 'firefox'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding '<Super>W'
+
+  # Ativa a lista de atalhos personalizados
+  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
+
+  # Wallpaper Debian
+  gsettings set org.gnome.desktop.background picture-uri "file:///home/pio/walls/monokai_pro_blue_debian.png"
+  gsettings set org.gnome.desktop.background picture-uri-dark "file:///home/pio/walls/monokai_pro_blue_debian.png"
 }
 
+# -- Debian stuffs --
+debian_usertheme(){
+  gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
+}
+
+# -- Debian Stuffs --
 tema_gnome-terminal(){
     sudo apt install dconf-cli uuid-runtime -y
     #Reset total dos perfis (isso remove tudo, mas é o que mais resolve):
     Bashdconf reset -f /org/gnome/terminal/legacy/profiles:/
+    echo -e "{GREEN}Temas: ${NC} 94 116 336 240 247"
     bash -c "$(wget -qO- https://git.io/vQgMr)"
 }
 
-install_walls() {
-    echo_header "Fixes e ajustes pessoais"
-    link "$HOME/.config/qtile/walls" "$HOME/walls"
+rice(){  
+  local zip_in="$HOME/.src/scripts/rice/rice.sh"
+  local setrice="$HOME/.src/scripts/rice/set_rice.sh"
+
+  if [ -f "$zip_in" ]; then
+        echo "+x zip_in"   
+        chmod +x "$zip_in" || echo "Aviso: não conseguiu dar permissão em share.sh"
+        echo "sh zip_in"
+        sh "$zip_in"
+        echo "+x setrice"
+        chmod +x "$setrice"
+        echo "sh setrice"
+        sh "$setrice"
+    else
+        echo "Aviso: share.sh não encontrado em $zip_in"
+    fi
 }
 
 enable_contrib_nonfree
 update_and_upgrade
 install_apps
+install_vscode
 install_flatpak
 install_firefox
-install_vscode
-install_fonts
-install_nvim
-install_hidden_applications
-install_starship
+share
+hidden_gnome
 install_shell_configs
-links_configs
+gnome_tweaks
+debian_usertheme
 tema_gnome-terminal
-install_walls
+rice
+
+# -- Conteudo share: --
+#share_fonts
+#share_nvim
+#share_hidden_applications
+#share_starship_config
+#share_links_configs
+#share_ufetch
+
+# -- Conteudo set_rice: --
+# Tema: WhiteSur-Dark-solid
+# Icone: McMojave-circle-black
+# Cursor: Afterglow-Cursors
