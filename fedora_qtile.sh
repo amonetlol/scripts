@@ -56,7 +56,7 @@ update_and_upgrade() {
 install_basic_packages() {
     echo "Instalando pacotes básicos para ambiente Qtile..."
     sudo dnf install -y \
-        git fedora polkit-gnome pavucontrol  python3-psutil python3-dbus \
+        git polkit-gnome pavucontrol  python3-psutil python3-dbus \
         wget neovim git rofi dmenu scrot xclip dunst alsa-utils alacritty picom \
         unzip gcc luarocks maim gnome-calendar mousepad thunar thunar-volman \
         thunar-archive-plugin file-roller gvfs unzip p7zip p7zip-plugins unrar bat \
