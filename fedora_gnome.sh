@@ -219,7 +219,7 @@ gnome_tweaks(){
 
 rice(){  
   local zip_in="$HOME/.src/scripts/rice/rice.sh"
-  local setrice="$_dir/set_rice.sh"
+  local setrice="$HOME/.src/scripts/rice/set_rice.sh"
 
   if [ -f "$zip_in" ]; then
         echo "+x zip_in"   
