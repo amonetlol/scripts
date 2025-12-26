@@ -163,7 +163,7 @@ debian_usertheme(){
 tema_gnome-terminal(){
     sudo apt install dconf-cli uuid-runtime -y
     #Reset total dos perfis (isso remove tudo, mas é o que mais resolve):
-    Bashdconf reset -f /org/gnome/terminal/legacy/profiles:/
+    dconf reset -f /org/gnome/terminal/legacy/profiles:/
     echo -e "{GREEN}Temas: ${NC} 94 116 336 240 247"
     bash -c "$(wget -qO- https://git.io/vQgMr)"
 }
