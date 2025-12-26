@@ -77,6 +77,7 @@ share_fonts() {
 
 share_nvim() {
     echo_header "AstroNvim (template limpo)"
+    rm -rf ~/.config/nvim
     git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
     rm -rf ~/.config/nvim/.git
     echo "AstroNvim clonado. Abra o nvim para finalizar a instalação inicial."
