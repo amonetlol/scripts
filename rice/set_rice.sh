@@ -10,3 +10,5 @@ gsettings set org.gnome.desktop.interface gtk-theme 'WhiteSur-Dark-solid'
 
 # Tema Shell (painel, overview etc.) – requer extensão User Themes instalada
 gsettings set org.gnome.shell.extensions.user-theme name 'WhiteSur-Dark-solid'
+
+echo "Set rice ok!"
