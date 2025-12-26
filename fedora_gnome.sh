@@ -186,12 +186,13 @@ install_hidden_applications() {
 install_starship() {
     echo_header "Starship prompt"
     link "$HOME/.src/qtile/config/starship.toml" "$HOME/.config/starship.toml"
+    sudo curl -sS https://starship.rs/install.sh | sh
 }
 
 install_shell_configs() {
     echo_header "Configurações do shell (.bashrc + .aliases)"
     # Cria symlink do .bashrc
-    link "$HOME/.src/qtile/" "$HOME/.bashrc"    
+    link "$HOME/.src/qtile/.bashrc" "$HOME/.bashrc"    
     link "$HOME/.src/qtile/.aliases" "$HOME/.aliases"
     link "$HOME/.src/qtile/.aliases-fedora" "$HOME/.aliases-fedora"
 
@@ -215,10 +216,15 @@ links_configs(){
     link "$HOME/.src/qtile/config/qtile/walls" "$HOME/walls"
 }
 
-install_walls() {
-    echo_header "Fixes e ajustes pessoais"
-    link "$HOME/.config/qtile/walls" "$HOME/walls"
+bin_fedora(){
+    #mkdir -p "$HOME/.bin"
+    #link "$HOME/.src/qtile/bin/sexyFetch.sh" "$HOME/.bin/sexyFetch.sh"
+    #ln -sf "$HOME/.src/qtile/bin" "$HOME/.bin"
+    ln -sf "$HOME/.src/qtile/bin" "$HOME/.bin"
+    cd "$HOME/.bin" && chmod +x *    
 }
+
+
 
 gnome_tweaks(){
   # -- Button --
@@ -247,5 +253,4 @@ install_hidden_applications
 install_starship
 install_shell_configs
 links_configs
-install_walls
 gnome_tweaks
