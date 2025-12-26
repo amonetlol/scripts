@@ -99,7 +99,7 @@ hidden_gnome() {
 install_shell_configs() {
     echo_header "Configurações do shell (.bashrc + .aliases)"
     # Cria symlink do .bashrc
-    link "$HOME/.src/qtile/" "$HOME/.bashrc"    
+    link "$HOME/.src/qtile/.bashrc" "$HOME/.bashrc"    
     link "$HOME/.src/qtile/.aliases" "$HOME/.aliases"
     link "$HOME/.src/qtile/.aliases-debian" "$HOME/.aliases-debian"
 
