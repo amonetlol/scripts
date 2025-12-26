@@ -29,7 +29,7 @@ echo_header() {
 global() {
     mkdir -p "$HOME/.src"
     if command -v git >/dev/null 2>&1; then
-        # echo "Git já está instalado."
+        echo "Git já está instalado."
         # git --version
     else
         # echo "Git não encontrado. Instalando..."
