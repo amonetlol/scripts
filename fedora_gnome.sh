@@ -158,6 +158,7 @@ hidden_gnome() {
     rm -rf "$HOME/.local/share/applications/kitty.desktop"
 }
 
+# -- Fedora Stuffs --
 install_starship() {
     sudo curl -sS https://starship.rs/install.sh | sh
 }
@@ -169,6 +170,7 @@ install_shell_configs() {
     link "$HOME/.src/qtile/.aliases" "$HOME/.aliases"
     link "$HOME/.src/qtile/.aliases-fedora" "$HOME/.aliases-fedora"
 
+    # -- Fedora Stuffs --
     # 1. Instalar o plugin do DNF para gerenciar repositórios COPR
     sudo dnf install -y 'dnf-command(copr)'
     # 2. Habilitar o repositório COPR específico para o eza
