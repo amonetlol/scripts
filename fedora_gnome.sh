@@ -218,17 +218,20 @@ gnome_tweaks(){
 }
 
 rice(){  
-  local dir="$HOME/.src/scripts/rice"
-  local install_dir="$_dir/rice.sh"
+  local zip_in="$HOME/.src/scripts/rice/rice.sh"
   local setrice="$_dir/set_rice.sh"
 
-  if [ -f "$install_dir" ]; then
-        chmod +x "$install_dir" || echo "Aviso: não conseguiu dar permissão em share.sh"
-        sh "$install_dir"
+  if [ -f "$zip_in" ]; then
+        echo "+x zip_in"   
+        chmod +x "$zip_in" || echo "Aviso: não conseguiu dar permissão em share.sh"
+        echo "sh zip_in"
+        sh "$zip_in"
+        echo "+x setrice"
         chmod +x "$setrice"
+        echo "sh setrice"
         sh "$setrice"
     else
-        echo "Aviso: share.sh não encontrado em $install_dir"
+        echo "Aviso: share.sh não encontrado em $zip_in"
     fi
 }
 
