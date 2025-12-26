@@ -42,10 +42,70 @@ dnf_tweaks() {
     sudo sh -c 'echo "fastestmirror=True" >> /etc/dnf/dnf.conf'  # opcional, mas recomendado
 }
 
-install_repo(){
-    sudo dnf install -y \
-    https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
-    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+install_repo() {
+    # Verifica se os repositórios RPM Fusion já estão presentes na lista
+    if dnf repolist | grep -q "rpmfusion-free\|rpmfusion-nonfree"; then
+        echo "RPM Fusion (free e/ou nonfree) já está habilitado."
+    else
+        echo "Habilitando RPM Fusion free e nonfree..."
+        sudo dnf install -y \
+            https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
+            https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+    fi
+
+    # Verificação final (opcional, mas útil para debug)
+    # echo "Repositórios RPM Fusion atuais:"
+    # dnf repolist | grep rpmfusion || echo "Nenhum repositório RPM Fusion encontrado."
+}
+
+install_repo_extra() {
+    # Verifica se os sub-repositórios já estão presentes
+    if dnf repolist | grep -q "rpmfusion-nonfree-nvidia-driver\|rpmfusion-nonfree-steam"; then
+        echo "Sub-repositórios RPM Fusion Nonfree (NVIDIA e/ou Steam) já estão habilitados."
+    else
+        echo "Habilitando sub-repositórios RPM Fusion Nonfree para NVIDIA drivers e Steam..."
+        sudo dnf install -y \
+            https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+        
+        # Atualiza metadados após adicionar o nonfree principal
+        sudo dnf makecache
+        
+        # Agora instala os branches específicos (eles configuram os sub-repos)
+        sudo dnf install -y \
+            rpmfusion-nonfree-nvidia-driver \
+            rpmfusion-nonfree-steam
+    fi
+
+    # Verificação final
+    # echo "Repositórios RPM Fusion Nonfree atuais (branches):"
+    # dnf repolist | grep "rpmfusion-nonfree" || echo "Nenhum sub-repositório Nonfree encontrado."
+}
+
+disable_repo_extra() {
+    # Verifica se os branches estão habilitados
+    if dnf repolist --enabled | grep -q "rpmfusion-nonfree-nvidia-driver\|rpmfusion-nonfree-steam"; then
+        
+        echo "Desativando sub-repositórios RPM Fusion Nonfree (NVIDIA e/ou Steam)..."
+        
+        # Desativa via setopt (DNF5)
+        sudo dnf config-manager setopt \
+            rpmfusion-nonfree-nvidia-driver.enabled=0 \
+            rpmfusion-nonfree-steam.enabled=0
+        
+        # Remove os pacotes que criam os branches (opcional, mas recomendado para limpeza total)
+        sudo dnf remove -y rpmfusion-nonfree-nvidia-driver rpmfusion-nonfree-steam
+        
+        # Atualiza metadados
+        sudo dnf makecache
+        
+        echo "Sub-repositórios desativados com sucesso."
+    else
+        echo "Sub-repositórios RPM Fusion Nonfree (NVIDIA e Steam) já estão desativados ou não foram encontrados."
+    fi
+
+    # Verificação final
+    # echo "Repositórios RPM Fusion Nonfree ativos:"
+    # dnf repolist --enabled | grep "rpmfusion-nonfree" || echo "Nenhum ativo encontrado."
 }
 
 update_and_upgrade() {
