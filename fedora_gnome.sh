@@ -169,6 +169,10 @@ install_nvim() {
 install_hidden_applications() {
     echo_header "Aplicações ocultas"
     link "$HOME/.src/qtile/local/share/applications" "$HOME/.local/share/applications"
+
+    # Fix Gnome
+    rm -rf "$HOME/.local/share/applications/Alacritty.desktop"
+    rm -rf "$HOME/.local/share/applications/kitty.desktop"
 }
 
 install_starship() {
