@@ -64,7 +64,7 @@ install_basic_packages() {
          findutils coreutils bc lua lua-devel python3-pip  \
         tree-sitter-cli npm nodejs fd-find feh qtile qtile-extras \
         open-vm-tools-desktop fuse gtk3-devel lightdm lightdm-gtk  \
-         btop ripgrep fastfetch duf kitty htop numlockx --skip-unavailable
+         btop ripgrep fastfetch duf kitty htop numlockx python3-neovim ImageMagick --skip-unavailable
 
     # Alguns pacotes extras úteis que costumam faltar em setups mínimos
     sudo dnf install -y \
@@ -72,7 +72,7 @@ install_basic_packages() {
         python3-xcffib python3-cairocffi python3-dbus-next  --skip-unavailable
 
     # FALTA ARRUMAR:
-    # xwallpaper imagemagick python3-pynvim lazygit starship
+    # xwallpaper lazygit starship
 }
 
 install_vscode() {
