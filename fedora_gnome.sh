@@ -222,6 +222,7 @@ gnome_tweaks(){
   gsettings set org.gnome.desktop.background picture-uri-dark "file:///home/pio/walls/monokai_pro_blue_fedora.png"
 }
 
+# Fedora stuffs
 fedora_usertheme(){
   gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
 }
