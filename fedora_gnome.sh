@@ -137,14 +137,15 @@ install_flatpak() {
 
 
 share(){   
-    local _dir="$HOME/.src/scripts"
-    local install_dir="$_dir/share.sh"
+    local sharerice="$HOME/.src/scripts/share.sh"
 
-    if [ -f "$install_dir" ]; then
-        chmod +x "$install_dir" || echo "Aviso: não conseguiu dar permissão em share.sh"
-        sh "$install_dir"
+    if [ -f "$sharerice" ]; then
+        echo "+x sharerice"
+        chmod +x "$sharerice" || echo "Aviso: não conseguiu dar permissão em share.sh"
+        echo "sh sharerice"
+        sh "$sharerice"
     else
-        echo "Aviso: share.sh não encontrado em $install_dir"
+        echo "Aviso: share.sh não encontrado em $sharerice"
     fi
 }
 
