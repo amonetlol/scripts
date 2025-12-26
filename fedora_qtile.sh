@@ -57,14 +57,14 @@ install_basic_packages() {
     echo "Instalando pacotes básicos para ambiente Qtile..."
     sudo dnf install -y \
         git polkit-gnome pavucontrol  python3-psutil python3-dbus \
-        wget neovim git rofi dmenu scrot xclip dunst alsa-utils alacritty picom \
-        unzip gcc luarocks maim gnome-calendar mousepad thunar thunar-volman \
+        wget neovim rofi dmenu scrot xclip dunst alsa-utils alacritty picom \
+        unzip gcc luarocks maim mousepad thunar thunar-volman \
         thunar-archive-plugin file-roller gvfs unzip p7zip p7zip-plugins unrar bat \
-        xdg-user-dirs xdg-user-dirs-gtk xdotool jq  \
+        xdg-user-dirs xdotool jq  \
          findutils coreutils bc lua lua-devel python3-pip  \
         tree-sitter-cli npm nodejs fd-find feh qtile qtile-extras \
         open-vm-tools-desktop fuse gtk3-devel lightdm lightdm-gtk  \
-         btop ripgrep fastfetch duf kitty htop numlockx xdg-user-dirs --skip-unavailable
+         btop ripgrep fastfetch duf kitty htop numlockx --skip-unavailable
 
     # Alguns pacotes extras úteis que costumam faltar em setups mínimos
     sudo dnf install -y \
@@ -148,7 +148,13 @@ install_starship() {
 }
 
 feh_fedora(){
-    feh --bg-fill '/home/pio/walls/monokai_pro_blue_fedora.png'
+    #feh --bg-fill '/home/pio/walls/monokai_pro_blue_fedora.png'
+    echo '#!/bin/env bash
+    feh --no-fehbg --bg-fill "/home/pio/walls/monokai_pro_blue_fedora.png"' > ~/.fehbg
+    chmod +x ~/.fehbg
+}
+bye() {
+  echo "Bye!!!!"
 }
 
 # ==============================================
