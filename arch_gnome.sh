@@ -112,7 +112,7 @@ speed(){
 
 install_apps(){
     if ! pacman -Qi gnome-shell &> /dev/null || ! pacman -Qi gdm &> /dev/null; then
-        sudo pacman -S --needed gnome
+        sudo pacman -S --needed --noconfirm gnome 
         sudo systemctl enable gdm
         #echo "GNOME instalado! Reinicie com 'reboot'."
     else
