@@ -121,7 +121,9 @@ install_apps(){
     
     yay -S --needed --noconfirm power-profiles-daemon linux-zen extension-manager visual-studio-code-bin reflector rsync ttf-jetbrains-mono-nerd \
         firefox wget neovim git kitty xclip wl-clipboard alacritty unzip fastfetch eza duf screenfetch starship btop ripgrep gcc luarocks ripgrep \
-        lazygit zip unzip p7zip unrar bat jq gnome-tweaks findutils coreutils bc lua51 python-pipenv python-nvim tree-sitter-cli npm nodejs fd htop  
+        lazygit zip unzip p7zip unrar bat jq gnome-tweaks findutils coreutils bc lua51 python-pipenv python-nvim tree-sitter-cli npm nodejs fd htop
+
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 
 share(){   
