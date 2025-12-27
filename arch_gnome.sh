@@ -110,11 +110,6 @@ speed(){
     sudo reflector --country Brazil --latest 10 --sort rate --save /etc/pacman.d/mirrorlist
 }
 
-debloat(){
- yay -R --noconfirm epiphany decibels malcontent simple-scan snapshot gnome-{calendar,characters,connections,contacts,software,music,remote-desktop,weather,maps} xterm
-}
-
-
 install_apps(){
     if ! pacman -Qi gnome-shell &> /dev/null || ! pacman -Qi gdm &> /dev/null; then
         sudo pacman -S --needed gnome
@@ -140,6 +135,10 @@ share(){
     else
         echo "Aviso: share.sh não encontrado em $sharerice"
     fi
+}
+
+debloat(){
+ yay -R --noconfirm epiphany decibels malcontent simple-scan snapshot gnome-{calendar,characters,connections,contacts,software,music,remote-desktop,weather,maps} xterm
 }
 
 hidden_gnome() {
@@ -230,8 +229,8 @@ pacman_parallel_downloads
 pre_install
 aur_helper
 speed
-debloat
 install_apps
+debloat
 share
 hidden_gnome
 install_shell_configs
