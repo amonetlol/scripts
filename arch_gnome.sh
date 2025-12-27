@@ -227,6 +227,10 @@ rice(){
     fi
 }
 
+bye(){
+    echo =e "${YELLOW}Reboot o sistema. BYE${NC}"
+}
+
 pacman_parallel_downloads
 pre_install
 aur_helper
@@ -238,6 +242,7 @@ hidden_gnome
 install_shell_configs
 gnome_tweaks
 rice
+bye
 
 # -- Conteudo share: --
 #share_fonts
