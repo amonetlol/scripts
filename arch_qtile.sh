@@ -220,7 +220,8 @@ vm() {
 }
 
 install(){    
-    yay -S --needed --noconfirm $packages    
+    yay -S --needed --noconfirm $packages
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 
 greeter_choice() {
@@ -265,7 +266,7 @@ greeter_choice() {
             if sudo grep -q "^greeter-session=" /etc/lightdm/lightdm.conf; then
                 sudo sed -i 's/^greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
             else
-                echo "greeter-session=slick-greeter" | sudo tee -a /etc/lightdm/lightdm.conf > /dev/null
+                echo "greeter-session=lightdm-slick-greeter" | sudo tee -a /etc/lightdm/lightdm.conf > /dev/null
             fi
 
             # Desativar SDDM se estiver ativo
