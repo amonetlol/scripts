@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e  # Para o script em caso de erro
+#set -e  # Para o script em caso de erro
 
 # Debian Trixie 13
 # /etc/apt/sources.list
