@@ -371,10 +371,10 @@ rice(){
         chmod +x "$zip_in" || echo "Aviso: não conseguiu dar permissão em share.sh"
         echo "sh zip_in"
         sh "$zip_in"
-        echo "+x setrice"
-        chmod +x "$setrice"
-        echo "sh setrice"
-        sh "$setrice"
+        # echo "+x setrice"
+        # chmod +x "$setrice"
+        # echo "sh setrice"
+        # sh "$setrice"
     else
         echo "Aviso: share.sh não encontrado em $zip_in"
     fi
