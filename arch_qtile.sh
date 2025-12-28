@@ -362,6 +362,24 @@ feh_arch(){
     chmod +x ~/.fehbg
 }
 
+rice(){  
+  local zip_in="$HOME/.src/scripts/rice/rice.sh"
+  local setrice="$HOME/.src/scripts/rice/set_rice.sh"
+
+  if [ -f "$zip_in" ]; then
+        echo "+x zip_in"   
+        chmod +x "$zip_in" || echo "Aviso: não conseguiu dar permissão em share.sh"
+        echo "sh zip_in"
+        sh "$zip_in"
+        echo "+x setrice"
+        chmod +x "$setrice"
+        echo "sh setrice"
+        sh "$setrice"
+    else
+        echo "Aviso: share.sh não encontrado em $zip_in"
+    fi
+}
+
 bye() {
   echo "Bye!!!!"
 }
@@ -377,4 +395,5 @@ display_manager
 clone_qtile
 install_shell_configs
 feh_arch
+rice
 bye
