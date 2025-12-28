@@ -146,6 +146,7 @@ packages="
   feh
   qtile
   htop
+  screenfetch
 "
 
 pacman_parallel_downloads() {
