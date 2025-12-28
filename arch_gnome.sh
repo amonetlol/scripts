@@ -140,7 +140,7 @@ share(){
 }
 
 debloat(){
- yay -R --noconfirm epiphany decibels malcontent simple-scan snapshot gnome-{calendar,characters,connections,contacts,software,music,remote-desktop,weather,maps} xterm
+ yay -R --noconfirm epiphany decibels malcontent simple-scan snapshot gnome-{calendar,characters,connections,contacts,software,music,remote-desktop,weather,maps}
 }
 
 hidden_gnome() {
@@ -228,7 +228,7 @@ rice(){
 }
 
 bye(){
-    echo =e "${YELLOW}Reboot o sistema. BYE${NC}"
+    echo -e "${YELLOW}Reboot o sistema. BYE${NC}"
 }
 
 pacman_parallel_downloads
