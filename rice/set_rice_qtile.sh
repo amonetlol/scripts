@@ -15,10 +15,10 @@ mkdir -p ~/.config/gtk-4.0
 # Cria os links simbólicos conforme a estrutura desejada
 
 # ~/.gtkrc-2.0 -> $SETTINGS_DIR/.gtkrc-2.0
-ln -sf "${SETTINGS_DIR}/.gtkrc-2.0" ~/.gtkrc-2.0
+ln -sf "${SETTINGS_DIR}/gtkrc-2.0" ~/.gtkrc-2.0
 
 # ~/.icons/default -> $SETTINGS_DIR/.icons/default
-ln -sf "${SETTINGS_DIR}/.icons/default" ~/.icons/default
+ln -sf "${SETTINGS_DIR}/icons/default" ~/.icons/default
 
 # ~/.config/gtk-3.0/settings.ini -> $SETTINGS_DIR/gtk-3.0/settings.ini
 ln -sf "${SETTINGS_DIR}/gtk-3.0/settings.ini" ~/.config/gtk-3.0/settings.ini
