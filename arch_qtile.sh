@@ -368,7 +368,7 @@ bye() {
 # função
 pacman_parallel_downloads
 pre_install
-speed
+#speed
 aur_helper
 install
 vm
