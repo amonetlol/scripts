@@ -234,7 +234,7 @@ bye(){
 pacman_parallel_downloads
 pre_install
 aur_helper
-speed
+#speed
 install_apps
 debloat
 share
