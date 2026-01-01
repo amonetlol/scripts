@@ -147,6 +147,9 @@ packages="
   qtile
   htop
   screenfetch
+  gammastep
+  polybar
+  xsettingsd
 "
 
 pacman_parallel_downloads() {
