@@ -29,30 +29,68 @@ echo_header() {
 # versão FINAL
 global() {
     mkdir -p "$HOME/.src"
+
+    # Detecta a distro via /etc/os-release
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release  # carrega as variáveis (ID, ID_LIKE, etc.)
+    else
+        echo "Não foi possível detectar a distribuição (arquivo /etc/os-release ausente)."
+        echo "Instalação do git abortada."
+        return 1
+    fi
+
+    # Verifica se git já está instalado
     if command -v git >/dev/null 2>&1; then
         echo "Git já está instalado."
-        # git --version
     else
-        # echo "Git não encontrado. Instalando..."
-        sudo dnf install -y git
-        # echo "Git instalado com sucesso."
-        # git --version
+        echo "Git não encontrado. Tentando instalar..."
+
+        # Determina o gerenciador de pacotes com base em ID ou ID_LIKE
+        if [[ "$ID" == "fedora" || "$ID_LIKE" == *"fedora"* || "$ID" == "rhel" || "$ID_LIKE" == *"rhel"* ]]; then
+            PKG_MANAGER="dnf"
+            INSTALL_CMD="sudo dnf install -y git"
+        elif [[ "$ID" == "ubuntu" || "$ID" == "debian" || "$ID_LIKE" == *"ubuntu"* || "$ID_LIKE" == *"debian"* ]]; then
+            PKG_MANAGER="apt"
+            # Atualiza a lista de pacotes primeiro (boa prática no apt)
+            sudo apt update
+            INSTALL_CMD="sudo apt install -y git"
+        elif [[ "$ID" == "arch" || "$ID" == "manjaro" || "$ID_LIKE" == *"arch"* ]]; then
+            PKG_MANAGER="pacman"
+            INSTALL_CMD="sudo pacman -S --noconfirm git"
+        else
+            echo "Distribuição não suportada automaticamente ($ID)."
+            echo "Instale o git manualmente e execute o script novamente."
+            return 1
+        fi
+
+        echo "Usando $PKG_MANAGER para instalar git..."
+        $INSTALL_CMD || {
+            echo "Falha ao instalar git com $PKG_MANAGER."
+            return 1
+        }
+        echo "Git instalado com sucesso."
     fi
+
     # Diretório de destino
     DEST="$HOME/.src/qtile"
 
-    # Se a pasta existir, remove recursivamente
+    # Remove se já existir
     if [ -d "$DEST" ]; then
-       echo "Pasta $DEST já existe. Removendo..."
+        echo "Pasta $DEST já existe. Removendo..."
         rm -rf "$DEST"
     fi
 
-    # Cria o diretório pai se necessário (opcional, mas útil)
+    # Cria o diretório pai (já feito no início, mas não custa garantir)
     mkdir -p "$(dirname "$DEST")"
 
     # Clona o repositório
     echo "Clonando Qtile para $DEST..."
-    git clone https://github.com/amonetlol/qtile.git "$DEST"
+    git clone https://github.com/amonetlol/qtile.git "$DEST" || {
+        echo "Falha ao clonar o repositório. Verifique sua conexão ou instalação do git."
+        return 1
+    }
+
+    echo "Concluído!"
 }
 
 global
