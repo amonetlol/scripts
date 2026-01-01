@@ -127,15 +127,15 @@ install_apps(){
 }
 
 share(){   
-    local sharerice="$HOME/.src/scripts/share.sh"
+    local share_mod="$HOME/.src/scripts/share.sh"
 
-    if [ -f "$sharerice" ]; then
-        echo "+x sharerice"
-        chmod +x "$sharerice" || echo "Aviso: não conseguiu dar permissão em share.sh"
-        echo "sh sharerice"
-        sh "$sharerice"
+    if [ -f "$share_mod" ]; then
+        echo "+x share_mod"
+        chmod +x "$share_mod" || echo "Aviso: não conseguiu dar permissão em share.sh"
+        echo "sh share_mod"
+        sh "$share_mod"
     else
-        echo "Aviso: share.sh não encontrado em $sharerice"
+        echo "Aviso: share.sh não encontrado em $share_mod"
     fi
 }
 
