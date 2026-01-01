@@ -124,7 +124,8 @@ install_basic_packages() {
          findutils coreutils bc lua lua-devel python3-pip  \
         tree-sitter-cli npm nodejs fd-find feh qtile qtile-extras \
         open-vm-tools-desktop fuse gtk3-devel lightdm lightdm-gtk  \
-         btop ripgrep fastfetch duf kitty htop numlockx python3-neovim ImageMagick --skip-unavailable
+         btop ripgrep fastfetch duf kitty htop numlockx python3-neovim \
+         gammastep polybar xsettingsd ImageMagick --skip-unavailable
 
     # Alguns pacotes extras úteis que costumam faltar em setups mínimos
     sudo dnf install -y \
