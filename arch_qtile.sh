@@ -377,10 +377,67 @@ rice(){
         echo "+x setrice"
         chmod +x "$setrice"
         echo "sh setrice"
-        sh "$setrice"
+        # Executa o set_rice # Define o tema,icone e cursor
+        # sh "$setrice"
     else
         echo "Aviso: share.sh não encontrado em $zip_in"
     fi
+}
+
+polybar_configs() {
+    local SRC_DIR="$HOME/.src"
+    local POLYBAR_DIR="$SRC_DIR/polybar"
+    local REPO_URL="https://github.com/amonetlol/polybar"
+
+    echo "=== Instalando polybar personalizada (amonetlol/polybar) ==="
+
+    # Cria a pasta .src se não existir
+    if [ ! -d "$SRC_DIR" ]; then
+        echo "Criando diretório $SRC_DIR..."
+        mkdir -p "$SRC_DIR"
+    fi
+
+    # Se a pasta polybar já existir, remove-a
+    if [ -d "$POLYBAR_DIR" ]; then
+        echo "Pasta $POLYBAR_DIR já existe. Removendo..."
+        rm -rf "$POLYBAR_DIR"
+    fi
+
+    # Clona o repositório
+    echo "Clonando repositório $REPO_URL..."
+    if ! git clone "$REPO_URL" "$POLYBAR_DIR"; then
+        echo "Erro: Falha ao clonar o repositório polybar."
+        return 1
+    fi
+
+    # Entra na pasta
+    cd "$POLYBAR_DIR" || {
+        echo "Erro: Não foi possível entrar na pasta $POLYBAR_DIR."
+        return 1
+    }
+
+    # Verifica se o script de instalação existe
+    if [ ! -f "00-install.sh" ]; then
+        echo "Erro: Script 00-install.sh não encontrado no repositório."
+        return 1
+    fi
+
+    # Dá permissão de execução e executa
+    echo "Dando permissão de execução ao 00-install.sh..."
+    chmod +x "00-install.sh"
+
+    echo "Executando o script de instalação da polybar..."
+    ./00-install.sh
+
+    if [ $? -eq 0 ]; then
+        echo "Polybar instalada com sucesso!"
+    else
+        echo "Erro durante a execução do 00-install.sh."
+        return 1
+    fi
+
+    echo "=== Instalação da polybar concluída ==="
+    echo
 }
 
 bye() {
@@ -399,4 +456,5 @@ clone_qtile
 install_shell_configs
 feh_arch
 rice
+polybar_configs
 bye
