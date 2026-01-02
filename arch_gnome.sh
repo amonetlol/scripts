@@ -251,6 +251,7 @@ bye
 #share_starship_config
 #share_links_configs
 #share_ufetch
+#share_nvim_root
 
 # -- Conteudo set_rice: --
 # Tema: WhiteSur-Dark-solid
