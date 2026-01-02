@@ -151,10 +151,16 @@ share_ufetch(){
   ~/.bin/get_ufetch
 }
 
+nvim_root(){
+    sudo git clone --depth 1 https://github.com/AstroNvim/template /root/.config/nvim
+    sudo rm -rf /root/.config/nvim/.git
+}
+
 share_fonts
 share_nvim
 share_hidden_applications
 share_starship_config
 share_links_configs
 share_ufetch
+nvim_root
 
