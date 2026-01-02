@@ -149,7 +149,10 @@ packages="
   screenfetch
   gammastep
   polybar
-  xsettingsd
+  neofetch
+  catfish
+  baobab
+  linux-zen
 "
 
 pacman_parallel_downloads() {
