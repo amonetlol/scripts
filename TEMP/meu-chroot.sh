@@ -3,7 +3,9 @@
 # 1. sudo fdisk -l
 # 2. sudo mkdir /mnt/root
 # 3. sudo mount /dev/sda2 /mnt/root
-# 4. sudo meu-chroot.sh
+#
+# ------ USO ----------
+# 4. sudo meu-chroot.sh /mnt/root
 #
 
 if [ $# -ne 1 ]; then
