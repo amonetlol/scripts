@@ -133,6 +133,12 @@ remove_bug() {
     sudo apt remove xserver-xorg-video-vmware xdg-desktop-portal-gtk xdg-user-dirs-gtk -y
 }
 
+set_ufetch() {
+    echo_header "Get Ufetch"
+    wget -O ~/.bin/ufetch https://gitlab.com/jschx/ufetch/-/raw/main/ufetch-ubuntu?ref_type=heads
+    chmod +x ~/.bin/ufetch
+}
+
 # Execução principal
 echo "======================================"
 echo "   Rice Ubuntu → Qtile + Polybar     "
@@ -151,6 +157,7 @@ rice
 install_shell_configs
 set_wallpaper
 remove_bug
+set_ufetch
 
 echo "======================================"
 echo "           Rice concluído!           "
