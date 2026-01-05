@@ -128,6 +128,11 @@ set_wallpaper() {
     feh --bg-fill '/home/pio/walls/monokai_pro_blue_debian.png'  # Ajuste o caminho
 }
 
+remove_bug() {
+    echo_header "Removendo pacotes que causam BUG"
+    sudo apt remove xserver-xorg-video-vmware xdg-desktop-portal-gtk xdg-user-dirs-gtk -y
+}
+
 # Execução principal
 echo "======================================"
 echo "   Rice Ubuntu → Qtile + Polybar     "
@@ -145,6 +150,7 @@ polybar_configs
 rice
 install_shell_configs
 set_wallpaper
+remove_bug
 
 echo "======================================"
 echo "           Rice concluído!           "
