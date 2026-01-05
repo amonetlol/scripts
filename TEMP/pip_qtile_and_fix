@@ -1,0 +1,45 @@
+sudo apt install python3-cffi libpangocairo-1.0-0 xserver-xorg xinit
+
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+uv tool install qtile
+uv tool install qtile[widgets]
+
+
+Lightdm:
+sudo nano /usr/share/xsessions/qtile.desktop
+[Desktop Entry]
+Name=Qtile
+Comment=Qtile Session
+Exec=/home/pio/.local/bin/qtile start
+Type=Application
+Keywords=wm;tiling
+
+Xinitrc
+nano ~/.xinitrc
+#!/bin/sh
+# Inicia o Qtile (use o caminho completo se instalado via uv)
+exec ~/.local/bin/qtile start
+
+# verificar pacote e permissão:
+sudo apt install xserver-xorg-legacy
+sudo nano /etc/X11/Xwrapper.config
+allowed_users=anybody
+needs_root_rights=yes
+
+startx
+
+Auto Tty:
+nano ~/.profile
+if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
+    exec startx
+fi
+
+
+# checar permissão
+ls -l /home/pio/.local/bin/qtile
+chmod +x /home/pio/.local/bin/qtile  # se necessário
+
+BUG:
+sudo apt remove xserver-xorg-video-vmware
+sudo apt remove xdg-desktop-portal-gtk xdg-user-dirs-gtk
