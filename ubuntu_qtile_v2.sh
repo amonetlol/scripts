@@ -74,7 +74,7 @@ install_all_packages() {
         unzip gcc luarocks maim loupe mousepad numlockx thunar thunar-volman thunar-archive-plugin file-roller gvfs zip p7zip-full unrar-free bat \
         nwg-look xdg-user-dirs xdg-user-dirs-gtk xdotool jq xxhash xwallpaper imagemagick findutils coreutils bc lua5.1 python3-pip python3-pynvim \
         tree-sitter-cli npm nodejs fd-find feh fuse libgtk-3-dev lightdm slick-greeter lazygit starship btop ripgrep \
-        eza fastfetch duf kitty htop gammastep polybar qtile $VMWARE_PKG
+        eza fastfetch duf kitty htop gammastep polybar qtile curl $VMWARE_PKG
 }
 
 enable_services() {
