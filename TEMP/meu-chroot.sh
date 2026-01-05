@@ -5,7 +5,7 @@
 # 3. sudo mount /dev/sda2 /mnt/root
 #
 # ------ USO ----------
-# 4. sudo meu-chroot.sh /mnt/root
+# 4. sudo ./meu-chroot.sh /mnt/root
 #
 
 if [ $# -ne 1 ]; then
