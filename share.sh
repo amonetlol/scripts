@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# --- Lista de Otimizações ---
+# echo header: OK
+# optimização de código: OK
+
 # Cores
 G='\033[0;32m' Y='\033[1;33m' N='\033[0m'
 
