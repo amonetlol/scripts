@@ -18,17 +18,17 @@ dnf remove -y task-games gnome-games quadrapassel mahjongg iagno aisleriot \
                --skip-unavailable
 
 # 2. Remover Suporte a Impressão (CUPS) e Scanner
-echo "Removendo serviços de impressão e scanner..."
-dnf remove -y cups cups-filters system-config-printer sane-backends \
-               simple-scan xsane task-printing-server task-printing-hp \
-               --skip-unavailable
+# echo "Removendo serviços de impressão e scanner..."
+#dnf remove -y cups cups-filters system-config-printer sane-backends \
+#               simple-scan xsane task-printing-server task-printing-hp \
+#               --skip-unavailable
 
 # 3. Remover Aplicativos Extras "Bloat"
 # (Ajuste esta lista conforme sua preferência)
 echo "Removendo aplicativos utilitários extras..."
 dnf remove -y evolution pidgin hexchat empathy brasero \
                gnome-maps gnome-weather gnome-contacts gnome-clocks \
-                gnome-music gnome-documents drakwizard gimp cheese \ 
+                gnome-music gnome-documents gimp cheese \ 
                 rhythmbox sound-juicer z42tool mtink photorec vinagre \
                 pan epiphany gnome-dictionary emacs gedit PySoIFC-cardsets \
                 rdesktop dvdauthor  endeavour gnome-sound-recorder \
@@ -38,7 +38,7 @@ dnf remove -y evolution pidgin hexchat empathy brasero \
 # 4. Mageia Stuffs"
 # (Ajuste esta lista conforme sua preferência)
 echo "Mageia Stuffs..."
-dnf remove -y emacs-common bijiben icewm-light --skip-unavailable
+dnf remove -y emacs-common bijiben transmission-* dasher dconf-editor gnome-terminal icewm-* scribus homebank planner dia inkscape filezilla pitivi --skip-unavailable
 
 # 5. Limpeza de dependências órfãs
 echo "Limpando pacotes desnecessários..."
