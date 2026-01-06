@@ -21,6 +21,7 @@ echo_header() { echo -e "\n${GREEN}===== $1 =====${NC}"; }
 
 # Final
 pacman_parallel_downloads() {
+    echo_header "Pacman.conf Stuffs..."
     echo_header "Otimizando pacman"
     sudo sed -i -e '/^ParallelDownloads/s/^/#/' -e '/^#ParallelDownloads/a ParallelDownloads = 25' \
             -e 's/^#Color$/Color/' \
@@ -29,12 +30,14 @@ pacman_parallel_downloads() {
 }
 
 pre_install(){
+    echo_header "Pre install...."
     echo 'MAKEFLAGS="-j$(nproc)"' | sudo tee -a /etc/makepkg.conf
     sudo pacman -S --needed --noconfirm archlinux-keyring
     sudo pacman -S --needed --noconfirm base-devel
 }
 
 aur_helper() {
+    echo_header "Aur Helper..."
     command -v yay >/dev/null 2>&1 && { echo "yay já instalado."; return; }
     mkdir -p "$HOME/.src" && cd "$HOME/.src" || return
     rm -rf yay-bin  # Limpa para clone fresco
@@ -44,6 +47,7 @@ aur_helper() {
 }
 
 install_apps(){
+    echo_header "Checando se Gnome esta instalado...."
     if ! pacman -Qi gnome-shell &> /dev/null || ! pacman -Qi gdm &> /dev/null; then
         sudo pacman -S --needed --noconfirm gnome 
         sudo systemctl enable gdm
@@ -53,29 +57,29 @@ install_apps(){
     fi
 
     aur_helper
+    echo_header "Instalando Apps..."
     yay -S --needed --noconfirm power-profiles-daemon extension-manager visual-studio-code-bin reflector rsync ttf-jetbrains-mono-nerd \
         firefox wget neovim git kitty xclip wl-clipboard alacritty unzip fastfetch eza duf screenfetch starship btop ripgrep gcc luarocks ripgrep \
         lazygit zip unzip p7zip unrar bat jq gnome-tweaks findutils coreutils bc lua51 python-pipenv python-nvim tree-sitter-cli npm nodejs fd htop screenfetch catfish    
 }
 
-share(){   
-    local share_mod="$HOME/.src/scripts/share.sh"
+share() {
+    echo_header "Share..."
+    local script="$HOME/.src/scripts/share.sh"
 
-    if [ -f "$share_mod" ]; then
-        echo "+x share_mod"
-        chmod +x "$share_mod" || echo "Aviso: não conseguiu dar permissão em share.sh"
-        echo "sh share_mod"
-        sh "$share_mod"
-    else
-        echo "Aviso: share.sh não encontrado em $share_mod"
-    fi
+    [[ -f "$script" ]] || { echo "Aviso: share.sh não encontrado em $script"; return 1; }
+    [[ -x "$script" ]] || chmod +x "$script"  # só tenta chmod se não for executável
+
+    "$script"  # executa diretamente, mais rápido e seguro que 'sh'
 }
 
 debloat(){
+    echo_header "Debloat..."
     yay -R --noconfirm gnome-music decibels gnome-weather gnome-calendar gnome-firmware malcontent micro
 }
 
 vm_tools() {
+    echo_header "VM Tools"
     pacman -Qs open-vm-tools >/dev/null && { echo "VM Tools já instalado."; return; }
     yay -S --needed --noconfirm open-vm-tools fuse2 gtkmm3
     sudo systemctl enable --now vmtoolsd
@@ -99,6 +103,7 @@ install_shell_configs() {
 }
 
 gnome_tweaks(){
+    echo_header "Gnome Tewaks..."
   # -- Button --
   gsettings set org.gnome.desktop.wm.preferences button-layout ':minimize,maximize,close'
 
@@ -153,11 +158,13 @@ rice() {
 }
 
 clean_lixo() {
+    echo_header "Limpando o sistema..."
     sudo pacman -Scc --noconfirm  # Limpa cache para velocidade
     yay -Scc --noconfirm
 }
 
 fix_manjaro() {
+    echo_header "Fix bash"
     chsh -s /bin/bash
 }
 
