@@ -1,5 +1,6 @@
 #!/bin/bash
 # Script chroot automático para sistemas BTRFS
+# sudo fdisk -l
 # Uso: sudo ./chroot-btrfs-auto.sh /dev/sdXY
 # Exemplo: sudo ./chroot-btrfs-auto.sh /dev/sda2
 
