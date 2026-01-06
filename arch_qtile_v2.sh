@@ -114,7 +114,7 @@ install_shell_configs() {
 
 feh_arch() {
     echo_header "Set wallpaper"
-    echo '#!/bin/env bash\nfeh --no-fehbg --bg-fill "/home/pio/walls/monokai_pro_blue_arch.png"' > ~/.fehbg
+    echo '#!/bin/env bash\nfeh --no-fehbg --bg-fill "/home/pio/.src/qtile/config/walls/monokai_pro_blue_arch.png"' > ~/.fehbg
     chmod +x ~/.fehbg
 }
 
