@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo pacman -R gnome-music decibels gnome-weather gnome-calendar gnome-firmware malcontent micro
