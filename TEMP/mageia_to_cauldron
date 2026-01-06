@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Upgrade Mageia para Cauldron (RR)
+
+# 1. Install repo Cauldron
+sudo dnf install mageia-repos-cauldron
+
+# 2. Instale o plugin de upgrade:
+sudo dnf install 'dnf-command(system-upgrade)'
+
+# 3. Inicie a migração:
+sudo dnf system-upgrade download --releasever=cauldron --allowerasing
+sudo dnf system-upgrade reboot
