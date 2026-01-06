@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Garantir privilégios de root
+if [ "$EUID" -ne 0 ]; then 
+  echo "Por favor, execute como root (usando sudo)."
+  exit
+fi
+
+echo "--- Iniciando o Debloat do Mageia GNOME ---"
+
+# 1. Remover Jogos (Geralmente instalados via task-games)
+echo "Removendo jogos e pacotes de entretenimento..."
+dnf remove -y task-games gnome-games quadrapassel mahjongg iagno aisleriot \
+               gnome-chess gnome-mines gnome-sudoku gnome-robots gnome-nibbles \
+               gnome-klotski gnome-taquin lightsoff hitori tali swami-poker-finesse \
+               four-in-a-row five-or-more gnome-mahjongg gnome-tetravex swell-foop \
+               gnome-2048 gnuchess \
+               --skip-unavailable
+
+# 2. Remover Suporte a Impressão (CUPS) e Scanner
+echo "Removendo serviços de impressão e scanner..."
+dnf remove -y cups cups-filters system-config-printer sane-backends \
+               simple-scan xsane task-printing-server task-printing-hp \
+               --skip-unavailable
+
+# 3. Remover Aplicativos Extras "Bloat"
+# (Ajuste esta lista conforme sua preferência)
+echo "Removendo aplicativos utilitários extras..."
+dnf remove -y evolution pidgin hexchat empathy brasero \
+               gnome-maps gnome-weather gnome-contacts gnome-clocks \
+                gnome-music gnome-documents drakwizard gimp cheese \ 
+                rhythmbox sound-juicer z42tool mtink photorec vinagre \
+                pan epiphany gnome-dictionary emacs gedit PySoIFC-cardsets \
+                rdesktop dvdauthor  endeavour gnome-sound-recorder \
+                gnome-multi-writer libreoffice-* polari gnome-calendar \
+                --skip-unavailable
+
+# 4. Mageia Stuffs"
+# (Ajuste esta lista conforme sua preferência)
+echo "Mageia Stuffs..."
+dnf remove -y emacs-common bijiben icewm-light --skip-unavailable
+
+# 5. Limpeza de dependências órfãs
+echo "Limpando pacotes desnecessários..."
+dnf autoremove -y
+dnf clean all
+
+echo "--- Processo concluído! ---"
+echo "Recomenda-se reiniciar o sistema para liberar processos antigos."
