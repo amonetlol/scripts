@@ -87,7 +87,7 @@ vm_tools() {
 display_manager() {
     echo_header "Configurando Display Manager"
     systemctl is-enabled --quiet sddm || systemctl is-enabled --quiet lightdm && { echo "DM já configurado."; return; }
-    echo "Escolha DM: 1) SDDM (sugar-dark) 2) LightDM (slick) 3) Nenhum"
+    echo "Escolha DM: 1) SDDM (sugar-dark) 2) LightDM 3) Nenhum"
     read -p "Opção (1-3): " choice
     case $choice in
         1) yay -S --noconfirm sddm sddm-sugar-dark
@@ -95,7 +95,7 @@ display_manager() {
            echo "[Theme]\nCurrent=sugar-dark" | sudo tee /etc/sddm.conf >/dev/null
            sudo systemctl disable lightdm --now 2>/dev/null
            sudo systemctl enable sddm ;;
-        2) yay -S --noconfirm lightdm lightdm-gtk-greeter lightdm-slick-greeter
+        2) yay -S --noconfirm lightdm lightdm-gtk-greeter
            #echo "[Seat:*]\ngreeter-session=lightdm-slick-greeter" | sudo tee /etc/lightdm/lightdm.conf >/dev/null
            sudo systemctl disable sddm --now 2>/dev/null
            sudo systemctl enable lightdm ;;
