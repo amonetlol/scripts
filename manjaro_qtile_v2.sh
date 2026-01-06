@@ -59,7 +59,7 @@ aur_helper() {
 install_packages() {
     echo_header "Instalando pacotes essenciais + Qtile"
     local pkgs=(
-        visual-studio-code-bin polkit-gnome pavucontrol reflector rsync xorg-xrandr ttf-jetbrains-mono-nerd
+        visual-studio-code-bin polkit-gnome pavucontrol xorg-xrandr ttf-jetbrains-mono-nerd
         firefox python-psutil python-dbus-next wget neovim git kitty rofi scrot xclip dunst alsa-utils alacritty
         picom unzip fastfetch eza duf starship btop ripgrep gcc luarocks lazygit pmenu dmenu maim loupe mousepad
         numlockx thunar thunar-volman thunar-archive-plugin file-roller gvfs zip unzip p7zip unrar bat nwg-look
