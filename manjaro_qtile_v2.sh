@@ -4,6 +4,10 @@
 # Manjaro é Arch-based, então herda do arch_qtile.sh com ajustes para pamac/yay e debloat expandido.
 # By Grok: Otimizado para rodar ~30-50% mais rápido (menos checks, installs em batch, clones shallow).
 
+# --- Lista de Otimizações ---
+# echo header: OK
+# optimização de código: OK
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -150,6 +154,9 @@ fix_manjaro() {
     chsh -s /bin/bash
 }
 
+bye(){
+    echo -e "${YELLOW}Reboot o sistema. BYE${NC}"
+}
 
 
 # Execução principal: Sequencial otimizada, sem waits desnecessários
@@ -169,6 +176,7 @@ feh_wallpaper
 #kernel_zen
 clean_lixo
 fix_manjaro
+bye
 
 echo "======================================"
 echo "           Rice concluído!           "
