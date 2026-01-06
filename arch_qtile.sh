@@ -206,7 +206,7 @@ install(){
 greeter_choice() {
     echo "Escolha o Display Manager (Greeter):"
     echo "1. SDDM (com tema sugar-dark)"
-    echo "2. LightDM (com slick-greeter)"
+    echo "2. LightDM"
     echo "3. Nenhum"
     echo -n "Opção (1-3): "
     read choice
@@ -235,18 +235,7 @@ greeter_choice() {
             ;;
         2)
             echo "Instalando e configurando LightDM com slick-greeter..."
-            yay -S --needed --noconfirm lightdm lightdm-gtk-greeter lightdm-slick-greeter  # lightdm-slick-greeter está nos repositórios oficiais (extra)
-
-            # Configurar greeter-session=slick-greeter em /etc/lightdm/lightdm.conf
-            sudo mkdir -p /etc/lightdm
-            if ! sudo grep -q "\[Seat:\*\]" /etc/lightdm/lightdm.conf 2>/dev/null; then
-                echo "[Seat:*]" | sudo tee /etc/lightdm/lightdm.conf > /dev/null
-            fi
-            if sudo grep -q "^greeter-session=" /etc/lightdm/lightdm.conf; then
-                sudo sed -i 's/^greeter-session=.*/greeter-session=lightdm-slick-greeter/' /etc/lightdm/lightdm.conf
-            else
-                echo "greeter-session=lightdm-slick-greeter" | sudo tee -a /etc/lightdm/lightdm.conf > /dev/null
-            fi
+            yay -S --needed --noconfirm lightdm lightdm-gtk-greeter            
 
             # Desativar SDDM se estiver ativo
             sudo systemctl disable sddm --now 2>/dev/null || true
