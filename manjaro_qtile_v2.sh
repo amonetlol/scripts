@@ -95,8 +95,7 @@ display_manager() {
            echo "[Theme]\nCurrent=sugar-dark" | sudo tee /etc/sddm.conf >/dev/null
            sudo systemctl disable lightdm --now 2>/dev/null
            sudo systemctl enable sddm ;;
-        2) yay -S --noconfirm lightdm lightdm-gtk-greeter
-           #echo "[Seat:*]\ngreeter-session=lightdm-slick-greeter" | sudo tee /etc/lightdm/lightdm.conf >/dev/null
+        2) yay -S --noconfirm lightdm lightdm-gtk-greeter           
            sudo systemctl disable sddm --now 2>/dev/null
            sudo systemctl enable lightdm ;;
         3) sudo systemctl disable sddm lightdm --now 2>/dev/null ;;
