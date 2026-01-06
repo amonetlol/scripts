@@ -3,6 +3,10 @@
 # Script otimizado para Ubuntu: Debloat GNOME, instala Qtile + Polybar custom + Rice
 # + Detecção VMware, instalação condicional de open-vm-tools-desktop
 
+# --- Lista de Otimizações ---
+# echo header: OK
+# optimização de código: OK
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -125,6 +129,7 @@ install_shell_configs() {
 }
 
 set_wallpaper() {
+    echo_header "Set feh..."
     feh --bg-fill '/home/pio/walls/monokai_pro_blue_debian.png'  # Ajuste o caminho
 }
 
