@@ -79,6 +79,7 @@ aur_helper() {
     command -v yay >/dev/null 2>&1 && { echo "yay já instalado."; return; }
     mkdir -p "$HOME/.src" && cd "$HOME/.src"
     rm -rf yay-bin
+    sudo pacman -S fakeroot --noconfirm
     git clone --depth 1 https://aur.archlinux.org/yay-bin.git yay-bin && cd yay-bin
     makepkg --noconfirm -si
 }
