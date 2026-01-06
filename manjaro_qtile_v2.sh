@@ -20,31 +20,33 @@ link() {
 
 echo_header() { echo -e "\n${GREEN}===== $1 =====${NC}"; }
 
+# Final
 pacman_parallel_downloads() {
     echo_header "Otimizando pacman"
-    sudo sed -i 's/^#ParallelDownloads.*/ParallelDownloads = 25/; s/^#Color/Color/; /#ILoveCandy/! { /\[options\]/a ILoveCandy }' /etc/pacman.conf
+    sudo sed -i -e '/^ParallelDownloads/s/^/#/' -e '/^#ParallelDownloads/a ParallelDownloads = 25' \
+            -e 's/^#Color$/Color/' \
+            -e '/^Color/a ILoveCandy' \
+            /etc/pacman.conf
 }
 
 debloat_manjaro_gnome() {
     echo_header "Debloating Manjaro GNOME"
     local pkgs_to_remove=(
         gnome-music decibels gnome-weather gnome-calendar gnome-firmware malcontent micro
-        gnome-software gnome-calculator gnome-clocks gnome-contacts gnome-font-viewer gnome-logs
-        gnome-maps gnome-photos gnome-screenshot gnome-system-monitor gnome-terminal gnome-text-editor
-        gnome-backgrounds gnome-control-center gnome-initial-setup gnome-online-accounts gnome-user-docs
-        gnome-user-share gnome-remote-desktop gnome-bluetooth gnome-power-manager gnome-keyring gnome-menus
-        gnome-themes-extra gnome-accessibility-themes libreoffice* thunderbird* remmina* transmission*
-        aisleriot cheese deja-dup evolution firefox-esr* shotwell* yelp* orca* rhythmbox totem gdm3 nautilus 
-        evince eog file-roller seahorse simple-scan baobab gnome-disk-utility gnome-tweaks gnome-settings-daemon
+        gnome-shell gdm gnome-browser-connector gnome-control-center gnome-shell-extensions
+        gnome-user-docs yelp gnome-tweaks nautilus gnome-calculator gnome-console gnome-disk-utility
+        gnome-text-editor gnome-system-monitor gnome-clocks gnome-tour gnome-backgrounds gnome-themes-extra
+        manjaro-gnome-backgrounds manjaro-gnome-settings pamac-gnome-integration nautilus-open-any-terminal nautilus-empty-file
+
     )
-    sudo pacman -Rns --noconfirm "${pkgs_to_remove[@]}" 2>/dev/null
-    sudo pacman -Scc --noconfirm  # Limpa cache para velocidade
+    sudo pacman -Rns --noconfirm "${pkgs_to_remove[@]}" 2>/dev/null    
 }
 
 aur_helper() {
     command -v yay >/dev/null 2>&1 && { echo "yay já instalado."; return; }
     mkdir -p "$HOME/.src" && cd "$HOME/.src" || return
     rm -rf yay-bin  # Limpa para clone fresco
+    sudo pacman -S fakeroot --noconfirm
     git clone --depth 1 https://aur.archlinux.org/yay-bin.git yay-bin && cd yay-bin || return
     makepkg --noconfirm -si
 }
@@ -57,10 +59,15 @@ install_packages() {
         picom unzip fastfetch eza duf starship btop ripgrep gcc luarocks lazygit pmenu dmenu maim loupe mousepad
         numlockx thunar thunar-volman thunar-archive-plugin file-roller gvfs zip unzip p7zip unrar bat nwg-look
         xdg-user-dirs xdotool jq xxhsum xwallpaper imagemagick findutils coreutils bc lua51 python-pipenv python-nvim
-        tree-sitter-cli npm nodejs fd feh qtile htop screenfetch gammastep polybar neofetch catfish baobab linux-zen
+        tree-sitter-cli npm nodejs fd feh qtile htop screenfetch gammastep polybar catfish baobab
     )
     aur_helper
-    yay -S --needed --noconfirm "${pkgs[@]}"  # Batch install para velocidade
+    yay -S --needed --noconfirm "${pkgs[@]}"  # Batch install para velocidade 
+}
+
+# Só para constar, não use no Manjaro
+kernel_zen(){
+    linux-zen
     sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 
@@ -82,7 +89,7 @@ display_manager() {
            sudo systemctl disable lightdm --now 2>/dev/null
            sudo systemctl enable sddm ;;
         2) yay -S --noconfirm lightdm lightdm-gtk-greeter lightdm-slick-greeter
-           echo "[Seat:*]\ngreeter-session=lightdm-slick-greeter" | sudo tee /etc/lightdm/lightdm.conf >/dev/null
+           #echo "[Seat:*]\ngreeter-session=lightdm-slick-greeter" | sudo tee /etc/lightdm/lightdm.conf >/dev/null
            sudo systemctl disable sddm --now 2>/dev/null
            sudo systemctl enable lightdm ;;
         3) sudo systemctl disable sddm lightdm --now 2>/dev/null ;;
@@ -129,6 +136,15 @@ rice() {
     [[ -f "$zip_script" ]] && chmod +x "$zip_script" "$set_script" && "$zip_script" && "$set_script"
 }
 
+clean_lixo() {
+    sudo pacman -Scc --noconfirm  # Limpa cache para velocidade
+    yay -Scc --noconfirm
+}
+
+fix_manjaro() {
+    chsh -s /bin/bash
+}
+
 
 
 # Execução principal: Sequencial otimizada, sem waits desnecessários
@@ -145,6 +161,9 @@ polybar_configs
 rice
 install_shell_configs
 feh_wallpaper
+#kernel_zen
+clean_lixo
+fix_manjaro
 
 echo "======================================"
 echo "           Rice concluído!           "
