@@ -1,4 +1,4 @@
-#!/bin/bash#!/usr/bin/env bash
+#!/usr/bin/env bash
 # Otimizado para Manjaro: Debloat GNOME, instala Qtile + Polybar custom + Rice
 # Adaptado dos scripts fornecidos: mais conciso, usa arrays/loops para velocidade, remove redundâncias.
 # Manjaro é Arch-based, então herda do arch_qtile.sh com ajustes para pamac/yay e debloat expandido.
