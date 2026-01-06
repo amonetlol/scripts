@@ -43,6 +43,7 @@ debloat_manjaro_gnome() {
 }
 
 aur_helper() {
+    echo_header "Aur Helper..."
     command -v yay >/dev/null 2>&1 && { echo "yay já instalado."; return; }
     mkdir -p "$HOME/.src" && cd "$HOME/.src" || return
     rm -rf yay-bin  # Limpa para clone fresco
@@ -67,11 +68,13 @@ install_packages() {
 
 # Só para constar, não use no Manjaro
 kernel_zen(){
+    echo_header "Kernel Zen...."
     linux-zen
     sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 
 vm_tools() {
+    echo_header "VM Tools..."
     pacman -Qs open-vm-tools >/dev/null && { echo "VM Tools já instalado."; return; }
     yay -S --needed --noconfirm open-vm-tools fuse2 gtkmm3
     sudo systemctl enable --now vmtoolsd
@@ -137,11 +140,13 @@ rice() {
 }
 
 clean_lixo() {
+    echo_header "Limpando o sistema..."
     sudo pacman -Scc --noconfirm  # Limpa cache para velocidade
     yay -Scc --noconfirm
 }
 
 fix_manjaro() {
+    echo_header "Fix bash"
     chsh -s /bin/bash
 }
 
