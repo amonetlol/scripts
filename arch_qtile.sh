@@ -155,41 +155,13 @@ packages="
   linux-zen
 "
 
+# Final
 pacman_parallel_downloads() {
-    echo "Configurando pacman para downloads paralelos (ParallelDownloads = 25)..."
-
-    local config_file="/etc/pacman.conf"
-
-    # Fazer backup do pacman.conf original (só na primeira vez)
-    if [ ! -f "${config_file}.backup" ]; then
-        sudo cp "${config_file}" "${config_file}.backup"
-        echo "Backup do pacman.conf original criado em ${config_file}.backup"
-    fi
-
-    # Ativar ParallelDownloads = 25
-    if grep -q "^#ParallelDownloads" "$config_file"; then
-        sudo sed -i 's/^#ParallelDownloads.*/ParallelDownloads = 25/' "$config_file"
-    elif grep -q "^ParallelDownloads" "$config_file"; then
-        sudo sed -i 's/^ParallelDownloads.*/ParallelDownloads = 25/' "$config_file"
-    else
-        # Se não existir a linha, adiciona na secção [options]
-        sudo sed -i '/^\[options\]/a ParallelDownloads = 25' "$config_file"
-    fi
-
-    # Ativar cor (bonito no terminal)
-    sudo sed -i 's/^#Color/Color/' "$config_file"
-
-    # Ativar ILoveCandy (Pacman com "boca" em vez de barra – opcional, mas clássico)
-    if grep -q "^#ILoveCandy" "$config_file"; then
-        sudo sed -i 's/^#ILoveCandy/ILoveCandy/' "$config_file"
-    elif ! grep -q "^ILoveCandy" "$config_file"; then
-        sudo sed -i '/^\[options\]/a ILoveCandy' "$config_file"
-    fi
-
-    echo "pacman.conf configurado com sucesso!"
-    echo "   → ParallelDownloads = 25"
-    echo "   → Color ativado"
-    echo "   → ILoveCandy ativado (pacman com animação bonitinha)"
+    echo_header "Otimizando pacman"
+    sudo sed -i -e '/^ParallelDownloads/s/^/#/' -e '/^#ParallelDownloads/a ParallelDownloads = 25' \
+            -e 's/^#Color$/Color/' \
+            -e '/^Color/a ILoveCandy' \
+            /etc/pacman.conf
 }
 
 vm() {
