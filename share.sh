@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# --------------------------------------
+#  --------------- V2 ------------------
+# --------------------------------------
+#
 # --- Lista de Otimizações ---
 # echo header: OK
 # optimização de código: OK
