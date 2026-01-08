@@ -47,7 +47,7 @@ vm_tools() {
 }
 
 # ---------- Pacotes principais ----------
-packages="polkit-gnome pavucontrol ttf-jetbrains-mono-nerd firefox python3-psutil python3-dbus-python wget neovim git kitty rofi scrot xclip dunst alsa-utils alacritty picom unzip fastfetch eza duf btop ripgrep gcc luarocks pmenu dmenu maim loupe mousepad starship lazygit numlockx thunar thunar-volman thunar-archive-plugin file-roller gvfs zip p7zip unrar bat nwg-look xdg-user-dirs xdotool jq xwallpaper imagemagick bc lua51 python3-pip tree-sitter npm nodejs fd feh qtile htop gammastep polybar neofetch catfish baobab open-vm-tools-desktop fzf zoxide fd-bash-completion"
+packages="polkit-gnome pavucontrol jetbrains-mono-fonts firefox python3-psutil python3-dbus-python wget neovim git kitty rofi scrot xclip dunst alsa-utils alacritty picom unzip fastfetch eza duf btop ripgrep gcc lua54-luarocks dmenu maim loupe mousepad starship lazygit numlockx thunar thunar-volman thunar-archive-plugin file-roller gvfs zip p7zip unrar bat nwg-look xdg-user-dirs xdotool jq xwallpaper ImageMagick bc lua51 python3-pip tree-sitter npm nodejs fd feh qtile htop gammastep polybar neofetch catfish baobab open-vm-tools-desktop fzf zoxide fd-bash-completion"
 
 install_packages() {
     echo_header "Instalando pacotes principais"
@@ -106,7 +106,7 @@ install_shell_configs() {
 feh_wallpaper() {
     echo_header "Set wallpaper"
     mkdir -p ~/.config
-    echo '#!/bin/env bash\nfeh --no-fehbg --bg-fill "/home/'"$USER"'/.src/qtile/config/walls/monokai_pro_blue_opensuse.png"' > ~/.fehbg
+    echo '#!/bin/env bash\nfeh --no-fehbg --bg-fill "/home/'"$USER"'/.src/qtile/config/walls/monokai_pro_blue_suse.png"' > ~/.fehbg
     chmod +x ~/.fehbg
 }
 
