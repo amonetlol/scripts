@@ -1,38 +1,40 @@
 #!/bin/bash
 
-# Script para trocar os repos do Tumbleweed para o mirror brasileiro download.opensuse.net.br
-# Rode com: sudo bash add-br-mirror-repos.sh
-# Backup automático dos repos antigos em /etc/zypp/repos.d/backup/
+# Script pra configurar repos essenciais no Tumbleweed (com mirror BR + openh264)
+# Inclui: oss, non-oss (mirror BR) e openh264 (oficial)
+# Rode com: sudo bash setup-repos-tumbleweed-br.sh
 
-set -e  # Para se algo der errado
+set -e
 
-MIRROR="https://download.opensuse.net.br/tumbleweed/repo"
+BASE_BR="https://download.opensuse.net.br/tumbleweed/repo"
 
-echo "Fazendo backup dos repos atuais..."
-sudo mkdir -p /etc/zypp/repos.d/backup
-sudo mv /etc/zypp/repos.d/*.repo /etc/zypp/repos.d/backup/ 2>/dev/null || true
+echo "=== Limpando repos antigos (por segurança) ==="
+sudo zypper clean --all
+sudo rm -f /etc/zypp/repos.d/*.repo  # remove tudo mesmo
 
-echo "Adicionando repo OSS..."
-sudo zypper addrepo -f -k $MIRROR/oss repo-oss
+echo "=== Adicionando repo OSS (mirror BR) ==="
+sudo zypper addrepo -f "$BASE_BR/oss/" repo-oss-br
 
-echo "Adicionando repo Non-OSS..."
-sudo zypper addrepo -f -k $MIRROR/non-oss repo-non-oss
+echo "=== Adicionando repo Non-OSS (mirror BR) ==="
+sudo zypper addrepo -f "$BASE_BR/non-oss/" repo-non-oss-br
 
-# echo "Adicionando repo Debug (opcional, mas útil pra reports)"
-# sudo zypper addrepo -f -k $MIRROR/debug repo-debug
+echo "=== Adicionando repo OpenH264 (oficial Cisco/openSUSE) ==="
+sudo zypper addrepo -f http://codecs.opensuse.org/openh264/openSUSE_Tumbleweed repo-openh264
 
-# echo "Adicionando repo Source OSS"
-# sudo zypper addrepo -f -k $MIRROR/src-oss repo-src-oss
+# Renomeia pra ficar claro no zypper lr
+sudo zypper renamerepo repo-oss-br "BR - OSS"
+sudo zypper renamerepo repo-non-oss-br "BR - Non-OSS"
+sudo zypper renamerepo repo-openh264 "OpenH264 (Cisco)"
 
-# echo "Adicionando repo Source Non-OSS"
-# sudo zypper addrepo -f -k $MIRROR/src-non-oss repo-src-non-oss
-
-echo "Renomeando repos pra identificar o mirror BR..."
-sudo zypper modifyrepo --all --name="BR-Mirror - $(zypper lr -d | grep 'repo-' | awk '{print $3}')"
-
-echo "Fazendo refresh dos repos..."
+echo "=== Atualizando cache dos repos ==="
 sudo zypper --non-interactive refresh
 
-echo "Pronto! Seus repos agora usam o mirror brasileiro."
-echo "Teste com: zypper dup"
-echo "Se quiser voltar: sudo mv /etc/zypp/repos.d/backup/*.repo /etc/zypp/repos.d/"
+echo "=== Instalando pacotes openh264 básicos ==="
+sudo zypper --non-interactive install gstreamer-plugin-openh264 mozilla-openh264
+
+echo "=== Pronto! Sistema configurado ==="
+echo "Teste o update completo: sudo zypper dup"
+echo "Lista de repos: zypper lr"
+echo ""
+echo "Se algo der errado, reinstala o pacote openSUSE-repos-Tumbleweed pra voltar ao padrão oficial:"
+echo "sudo zypper in openSUSE-repos-Tumbleweed"
