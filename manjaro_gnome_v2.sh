@@ -64,7 +64,7 @@ install_apps(){
     aur_helper
     echo_header "Instalando Apps..."
     yay -S --needed --noconfirm power-profiles-daemon extension-manager visual-studio-code-bin reflector rsync ttf-jetbrains-mono-nerd \
-        firefox wget neovim git kitty xclip wl-clipboard alacritty unzip fastfetch eza duf screenfetch starship btop ripgrep gcc luarocks ripgrep \
+        firefox wget neovim git kitty xclip wl-clipboard alacritty fastfetch eza duf screenfetch starship btop ripgrep gcc luarocks ripgrep \
         lazygit zip unzip p7zip unrar bat jq gnome-tweaks findutils coreutils bc lua51 python-pipenv python-nvim tree-sitter-cli npm nodejs fd htop screenfetch catfish    
 }
 
