@@ -1,41 +1,57 @@
 Passo a passo (2026 – layout mais comum do Arch)
 1. Verifique seu layout de subvolumes
-Bashsudo btrfs subvolume list /
+
+sudo btrfs subvolume list /
+
 Procure algo parecido com:
 textID 256 ... path @
 ID 257 ... path @home
 ID 258 ... path @snapshots   ← ou .snapshots
+
 Se você tem @ montado em / (padrão recomendado pelo Arch desde ~2022/2023), continue.
 Se não tem subvolumes separados (ou montou tudo flat), snapshots funcionam, mas rollback é mais chato.
-2. Instale os pacotes principais
-Bashsudo pacman -S snapper btrfs-progs  # btrfs-progs quase sempre já está instalado
-3. Instale o hook que dispara snapshots no pacman
-Bashsudo pacman -S snap-pac
-Esse é o pacote que faz exatamente o que você quer: snapshot antes e depois de toda transação pacman significativa.
-Opcional mas muito recomendado (para ver/gerenciar snapshots com GUI)
-Bashsudo pacman -S btrfs-assistant  # ou snapper-gui-git AUR se preferir
-4. Crie a configuração do Snapper para a raiz
-Bashsudo snapper -c root create-config /
-Isso cria:
 
+2. Instale os pacotes principais
+
+sudo pacman -S snapper btrfs-progs  # btrfs-progs quase sempre já está instalado
+
+3. Instale o hook que dispara snapshots no pacman
+
+sudo pacman -S snap-pac
+
+Esse é o pacote que faz exatamente o que você quer: snapshot antes e depois de toda transação pacman significativa.
+
+Opcional mas muito recomendado (para ver/gerenciar snapshots com GUI)
+sudo pacman -S btrfs-assistant  # ou snapper-gui-git AUR se preferir
+
+4. Crie a configuração do Snapper para a raiz
+
+sudo snapper -c root create-config /
+
+Isso cria:
 /etc/snapper/configs/root
 subvolume /.snapshots (ou @snapshots, dependendo do seu fstab)
 
 5. Ajuste permissões do .snapshots (muito importante no Arch)
-Bashsudo chmod a+rx /.snapshots
+
+sudo chmod a+rx /.snapshots
 sudo chown :users /.snapshots   # ou seu grupo principal, opcional
+
 6. Desative os snapshots automáticos por tempo (o que você NÃO quer)
 Edite o arquivo de configuração:
-Bashsudo nano /etc/snapper/configs/root
+sudo nano /etc/snapper/configs/root
 Mude estas linhas (ou comente):
 textTIMELINE_CREATE="no"
 TIMELINE_CLEANUP="no"
 (ou simplesmente deixe como no se já estiver)
 Salve e saia.
+
 7. (Opcional) Crie um snapshot inicial manual
-Bashsudo snapper -c root create --description "Sistema limpo após instalação/configuração"
+
+sudo snapper -c root create --description "Sistema limpo após instalação/configuração"
+
 8. Teste
-Bash# Faça um update pequeno para testar
+h# Faça um update pequeno para testar
 sudo pacman -Syu neofetch
 
 # Liste os snapshots
@@ -43,7 +59,9 @@ sudo snapper -c root list
 Você deve ver algo assim:
 text...  pre   ...  pacman -Syu neofetch
 ...  post  ...  pacman -Syu neofetch
+
 Bônus: facilitar rollback + boot nos snapshots
 Se você usa GRUB (muito comum no Arch com Btrfs):
-Bashsudo pacman -S grub-btrfs inotify-tools
+
+sudo pacman -S grub-btrfs inotify-tools
 sudo systemctl enable --now grub-btrfsd
