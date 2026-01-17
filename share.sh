@@ -86,6 +86,10 @@ return {
 }
 EOF
 
+# OU
+# mkdir -p ~/.config/nvim/lua/user
+# curl -sLf https://github.com/amonetlol/scripts/raw/refs/heads/main/TEMP/nvim_fix/mappings.lua -o ~/.config/nvim/lua/user/mappings.lua
+
 echo "AstroNvim pronto. Abra nvim para sincronizar plugins."
 
 # Aplicações ocultas
