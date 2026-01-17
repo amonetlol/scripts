@@ -65,3 +65,5 @@ Se você usa GRUB (muito comum no Arch com Btrfs):
 
 sudo pacman -S grub-btrfs inotify-tools
 sudo systemctl enable --now grub-btrfsd
+
+update-grub
