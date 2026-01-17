@@ -76,11 +76,17 @@ echo "→ Resultado atual:"
 if mountpoint -q "$MOUNT_POINT"; then
     echo -e "${GREEN}OK →${NC} $MOUNT_POINT está montado"
     df -hT "$MOUNT_POINT" | tail -n 1
+    # Criando atalho na pasta HOME
+    ln -s "$MOUNT_POINT" "$HOME/SERVER"
+    echo -e "${GREEN}Atalho criado em ~/SERVER ${NC}"
 else
     echo -e "${RED}Atenção →${NC} $MOUNT_POINT NÃO está montado"
     echo "Tente montar manualmente para ver o erro:"
     echo "  sudo mount \"$MOUNT_POINT\""
 fi
+
+
+
 
 echo
 echo "Comandos úteis para debug:"
