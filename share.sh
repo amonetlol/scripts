@@ -65,47 +65,6 @@ header "AstroNvim (usuário)"
 rm -rf ~/.config/nvim
 git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
 rm -rf ~/.config/nvim/.git
-
-# Mappings personalizados
-mkdir -p ~/.config/nvim/lua/user
-cat > ~/.config/nvim/lua/user/mappings.lua << 'EOF'
-return {
-  -- Modo Normal
-  n = {
-    ["<C-s>"] = { "<cmd>update<CR>", desc = "Salvar buffer", remap = false, silent = true },
-    -- Ou mais explícito: { function() vim.cmd("update") end, desc = "...", ... }
-
-    ["<C-q>"] = { "<cmd>wqa<CR>", desc = "Salvar e sair de todos os buffers", remap = false, silent = true },
-  },
-
-  -- Modo Insert (muito usado para salvar sem sair do insert)
-  i = {
-    ["<C-s>"] = {
-      function()
-        vim.cmd("update")
-        -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Right>", true, false, true), "n", false) -- opcional: move cursor 1 pra direita pra "refrescar"
-      end,
-      desc = "Salvar buffer (permanece no insert)",
-      remap = false,
-      silent = true,
-    },
-
-    ["<C-q>"] = { "<Esc><cmd>wqa<CR>", desc = "Salvar e sair de todos", remap = false, silent = true },
-  },
-
-  -- Modo Visual (se quiser salvar seleção ou só o buffer)
-  v = {
-    ["<C-s>"] = { "<Esc><cmd>update<CR>", desc = "Salvar buffer", remap = false, silent = true },
-    ["<C-q>"] = { "<Esc><cmd>wqa<CR>", desc = "Salvar e sair de todos", remap = false, silent = true },
-  },
-
-  -- Opcional: Modo Command-line (se quiser <C-s> lá também)
-  c = {
-    ["<C-s>"] = { "<cmd>update<CR>", desc = "Salvar buffer", remap = false, silent = true },
-  },
-}
-EOF
-
 # OU
 # mkdir -p ~/.config/nvim/lua/user
 # curl -sLf https://github.com/amonetlol/scripts/raw/refs/heads/main/TEMP/nvim_fix/mappings.lua -o ~/.config/nvim/lua/user/mappings.lua
