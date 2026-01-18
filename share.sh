@@ -72,18 +72,36 @@ cat > ~/.config/nvim/lua/user/mappings.lua << 'EOF'
 return {
   -- Modo Normal
   n = {
-    ["<C-s>"] = { "<cmd>w<cr>", desc = "Salvar buffer" },
-    ["<C-q>"] = { "<cmd>wqa<cr>", desc = "Salvar e sair todos" },
+    ["<C-s>"] = { "<cmd>update<CR>", desc = "Salvar buffer", remap = false, silent = true },
+    -- Ou mais explícito: { function() vim.cmd("update") end, desc = "...", ... }
+
+    ["<C-q>"] = { "<cmd>wqa<CR>", desc = "Salvar e sair de todos os buffers", remap = false, silent = true },
   },
-  -- Modo Insert
+
+  -- Modo Insert (muito usado para salvar sem sair do insert)
   i = {
-    ["<C-s>"] = { "<cmd>w<cr>", desc = "Salvar buffer" },
-    ["<C-q>"] = { "<cmd>wqa<cr>", desc = "Salvar e sair todos" },
+    ["<C-s>"] = {
+      function()
+        vim.cmd("update")
+        -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Right>", true, false, true), "n", false) -- opcional: move cursor 1 pra direita pra "refrescar"
+      end,
+      desc = "Salvar buffer (permanece no insert)",
+      remap = false,
+      silent = true,
+    },
+
+    ["<C-q>"] = { "<Esc><cmd>wqa<CR>", desc = "Salvar e sair de todos", remap = false, silent = true },
   },
-  -- Modo Visual
+
+  -- Modo Visual (se quiser salvar seleção ou só o buffer)
   v = {
-    ["<C-s>"] = { "<cmd>w<cr>", desc = "Salvar buffer" },
-    ["<C-q>"] = { "<cmd>wqa<cr>", desc = "Salvar e sair todos" },
+    ["<C-s>"] = { "<Esc><cmd>update<CR>", desc = "Salvar buffer", remap = false, silent = true },
+    ["<C-q>"] = { "<Esc><cmd>wqa<CR>", desc = "Salvar e sair de todos", remap = false, silent = true },
+  },
+
+  -- Opcional: Modo Command-line (se quiser <C-s> lá também)
+  c = {
+    ["<C-s>"] = { "<cmd>update<CR>", desc = "Salvar buffer", remap = false, silent = true },
   },
 }
 EOF
