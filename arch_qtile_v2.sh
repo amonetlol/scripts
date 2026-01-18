@@ -67,7 +67,7 @@ btop ripgrep gcc luarocks lazygit pmenu dmenu maim loupe mousepad numlockx thuna
 thunar-volman thunar-archive-plugin file-roller gvfs zip p7zip unrar bat nwg-look
 xdg-user-dirs xdotool jq xxhsum xwallpaper imagemagick findutils coreutils bc lua51
 python-pipenv python-nvim tree-sitter-cli npm nodejs fd feh qtile htop screenfetch
-gammastep polybar neofetch catfish baobab linux-zen"
+gammastep polybar neofetch catfish baobab linux-zen bash-completion"
 
 install() {
     yay -Syu --needed --noconfirm $packages &&
