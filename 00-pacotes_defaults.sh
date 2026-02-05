@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
 # =============================================================================
 # Script para instalação de pacotes no Arch Linux / Manjaro / EndeavourOS etc
-# Uso: 
-#   ./pacotes_defaults.sh          → instala tudo (pacotes normais + vm se quiser)
-#   ./pacotes_defaults.sh vm       → instala SOMENTE os pacotes de VMware
-#   ./pacotes_defaults.sh geral    → instala somente os pacotes gerais 
+# Agora com suporte a AUR via yay (instala yay-bin automaticamente se necessário)
 # =============================================================================
-
 set -euo pipefail
 
-# Cores para saída (opcional mas ajuda bastante)
+# Cores para saída
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -18,43 +14,69 @@ NC='\033[0m' # No Color
 echo -e "${GREEN}→ Iniciando instalação de pacotes...${NC}\n"
 
 # ------------------------------------------------------------------------------
-# MÓDULO: pacotes gerais / workflow de terminal moderno
+# Função: Instalar yay se não estiver presente (usa yay-bin do AUR)
+# ------------------------------------------------------------------------------
+install_yay_if_needed() {
+    if command -v yay &> /dev/null; then
+        echo -e "${GREEN}✓ yay já está instalado${NC}"
+        return 0
+    fi
+
+    echo -e "${YELLOW}yay não encontrado. Instalando yay-bin (AUR)...${NC}"
+
+    # Instala dependências básicas necessárias para compilar/instalar do AUR
+    sudo pacman -S --needed --noconfirm base-devel git
+
+    # Diretório temporário limpo
+    local tmpdir="/tmp/yay-install-$(date +%s)"
+    mkdir -p "$tmpdir"
+    cd "$tmpdir"
+
+    # Clona yay-bin (binário pré-compilado → mais rápido e sem compilar Go)
+    git clone https://aur.archlinux.org/yay-bin.git .
+    
+    # Build e instala sem interação (assume sim para todas as perguntas)
+    makepkg -si --noconfirm --needed
+
+    cd - >/dev/null
+    rm -rf "$tmpdir"
+
+    if command -v yay &> /dev/null; then
+        echo -e "${GREEN}✓ yay-bin instalado com sucesso!${NC}\n"
+    else
+        echo -e "${RED}Erro: falha ao instalar yay. Instale manualmente.${NC}"
+        echo "Tente: git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si"
+        exit 1
+    fi
+}
+
+# ------------------------------------------------------------------------------
+# MÓDULO: pacotes gerais (agora usando yay para suportar AUR como visual-studio-code-bin)
 # ------------------------------------------------------------------------------
 install_pacotes_gerais() {
     echo -e "${YELLOW}Instalando pacotes gerais / dev / terminal moderno...${NC}"
 
     local pkgs=(
-        # base & ferramentas básicas de compilação
         base-devel
-
-        # shell & navegação melhorada
         starship
         zoxide
         eza
         fd
         ripgrep
-        fzf           # muito útil junto com zoxide/ripgrep
-
-        # visualização de disco / sistema
+        fzf
         duf
         fastfetch
         btop
         htop
         neofetch
         screenfetch
-
-        # git & editores
         lazygit
         git
         neovim
-        visual-studio-code-bin
-
-        # terminais modernos (escolha 1 ou mais)
+        visual-studio-code-bin      # ← AUR
         foot
         kitty
         alacritty
-
-        # ferramentas de desenvolvimento / LSP / nvim
         gcc
         luarocks
         jq
@@ -63,19 +85,18 @@ install_pacotes_gerais() {
         bc
         lua51
         python-pipenv
-        python-pynvim      # antigo python-neovim → use pynvim
+        python-pynvim
         tree-sitter-cli
         npm
         nodejs
-
-        # utilitários gerais
         wget
         curl
         bash-completion
     )
 
-    sudo pacman -S --needed --noconfirm "${pkgs[@]}"
-    
+    # Usa yay para instalar tudo (pacman + AUR) de uma vez
+    yay -S --needed --noconfirm "${pkgs[@]}"
+
     echo -e "${GREEN}✓ Pacotes gerais instalados${NC}\n"
 }
 
@@ -83,25 +104,24 @@ install_pacotes_gerais() {
 # MÓDULO: pacotes para máquinas virtuais (VMware / VirtualBox guests)
 # ------------------------------------------------------------------------------
 install_pacotes_vm() {
-    echo -e "${YELLOW}Instalando pacotes para convidado VM (open-vm-tools)...${NC}"
+    echo -e "${YELLOW}Instalando pacotes para convidado VM...${NC}"
 
     local vm_pkgs=(
         open-vm-tools
-        open-vm-tools-dkms  # caso precise do módulo dkms
         fuse2
         gtkmm3
-        # Opcional: se usar virtualbox como guest
+        #open-vm-tools-dkms
+        # Opcional: descomente se usar VirtualBox como guest
         # virtualbox-guest-utils
         # virtualbox-guest-dkms
     )
 
-    sudo pacman -S --needed --noconfirm "${vm_pkgs[@]}"
+    yay -S --needed --noconfirm "${vm_pkgs[@]}"
 
-    # Ativação automática mais comum em VMs VMware
+    # Ativação automática (VMware guest comum)
     if systemctl is-active --quiet vmware-vmblock-fuse.service 2>/dev/null; then
         echo -e "${GREEN}→ Ativando serviços open-vm-tools...${NC}"
-        sudo systemctl enable --now vmtoolsd.service
-        sudo systemctl enable --now vmware-vmblock-fuse.service
+        sudo systemctl enable --now vmtoolsd.service vmware-vmblock-fuse.service
     fi
 
     echo -e "${GREEN}✓ Pacotes de VM instalados${NC}\n"
@@ -111,6 +131,9 @@ install_pacotes_vm() {
 # Lógica principal
 # ------------------------------------------------------------------------------
 main() {
+    # Primeiro: garante que yay está disponível
+    install_yay_if_needed
+
     if [[ $# -eq 0 ]]; then
         # Sem argumentos → instala tudo
         install_pacotes_gerais
@@ -124,17 +147,15 @@ main() {
         install_pacotes_gerais
     else
         echo -e "${RED}Uso:${NC}"
-        echo "  $0                → tudo (pergunta sobre VM)"
-        echo "  $0 vm             → somente pacotes de VM"
-        echo "  $0 geral          → somente pacotes normais"
+        echo "  $0               → tudo (pergunta sobre VM)"
+        echo "  $0 vm            → somente pacotes de VM"
+        echo "  $0 geral         → somente pacotes normais"
         exit 1
     fi
 
     echo -e "\n${GREEN}Instalação concluída!${NC}"
     echo -e "Execute ${YELLOW}fastfetch${NC} ou ${YELLOW}starship${NC} para ver o resultado.\n"
+    echo -e "Dica: agora você pode usar ${YELLOW}yay${NC} para instalar qualquer pacote do AUR!"
 }
 
 main "$@"
-
-
-
