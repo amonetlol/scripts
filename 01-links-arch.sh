@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ln -sf $PWD/bin ~/.bin
-ln -sf $PWD/AQUI ~/AQUI
+chmod +x $PWD/bin/*
 ln -sf $PWD/.aliases ~/.aliases
 ln -sf $PWD/.aliases-arch ~/.aliases-arch
 ln -sf $PWD/.bashrc ~/.bashrc
