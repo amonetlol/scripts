@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+ln -sf $PWD/bin ~/.bin
+ln -sf $PWD/AQUI ~/AQUI
+ln -sf $PWD/.aliases ~/.aliases
+ln -sf $PWD/.aliases-arch ~/.aliases-arch
+ln -sf $PWD/.bashrc ~/.bashrc
+ln -sf $PWD/config/starship.toml ~/.config/starship.toml
+ln -sf $PWD/config/fastfetch ~/.config/fastfetch
+ln -sf $PWD/local/share/applications ~/.local/share/applications
+
+echo "Done!!!!"
