@@ -67,8 +67,7 @@ install_pacotes_gerais() {
         duf
         fastfetch
         btop
-        htop
-        neofetch
+        htop        
         screenfetch
         lazygit
         git
