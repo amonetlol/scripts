@@ -91,6 +91,7 @@ install_pacotes_gerais() {
         wget
         curl
         bash-completion
+        tldr
     )
 
     # Usa yay para instalar tudo (pacman + AUR) de uma vez
