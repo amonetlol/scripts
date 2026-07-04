@@ -57,7 +57,7 @@ LIBREOFFICE=(
 # === 6. Seção OPCIONAL: Suporte a impressão e scanner (descomente para ativar) ===
  PRINTING=(
      cups cups-filters system-config-printer sane-backends
-     simple-scan xsane task-printing-server task-printing-hp
+     simple-scan xsane task-printing-server task-printing-hp task-printing-epson hplip hplip-gui
  )
 
 # Função para remover pacotes com verificação
