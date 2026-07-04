@@ -30,6 +30,10 @@ BLOAT_APPS=(
     gnome-music gnome-documents rhythmbox sound-juicer
     cheese gnome-sound-recorder pan epiphany polari gnome-calendar
     transmission-common transmission-gtk transmission-qt
+    gnome-dictionary endeavour gnome-photos PySolFC
+    emacs-common emacs epsoneplijs lexmark7000linux
+    lexmark2070 icewn-light mageia-doc-draklive-common
+    mageia-doc-mcc-common mtink z42tool
 )
 
 # === 3. Editores e ferramentas gráficas extras ===
@@ -47,14 +51,14 @@ MAGEIA_EXTRAS=(
 
 # === 5. LibreOffice completo (mantenha se quiser apenas alguns módulos) ===
 LIBREOFFICE=(
-    libreoffice-*
+    libreoffice*
 )
 
 # === 6. Seção OPCIONAL: Suporte a impressão e scanner (descomente para ativar) ===
-# PRINTING=(
-#     cups cups-filters system-config-printer sane-backends
-#     simple-scan xsane task-printing-server task-printing-hp
-# )
+ PRINTING=(
+     cups cups-filters system-config-printer sane-backends
+     simple-scan xsane task-printing-server task-printing-hp
+ )
 
 # Função para remover pacotes com verificação
 remove_packages() {
